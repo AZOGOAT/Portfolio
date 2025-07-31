@@ -1,0 +1,17 @@
+package ch.epfl.cs107.icmon.gamelogic.fights;
+
+import ch.epfl.cs107.icmon.actor.pokemon.Pokemon;
+import ch.epfl.cs107.icmon.gamelogic.actions.Action;
+
+/**
+ * ???
+ *
+ * @author Hamza REMMAL (hamza.remmal@epfl.ch)
+ */
+public interface ICMonFightAction extends Action {
+
+    String name();
+
+    boolean doAction(Pokemon target);
+
+}
