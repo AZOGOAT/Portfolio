@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" type="image/png" href="./images/logos/favicon.png" />
+
+  <!-- Put your site title here -->
+  <title>
+    Azgaoui Omar Ziyad | An aspiring computer scientist studying in Lausanne, Switzerland.
+  </title>
+
+  <meta name="description" content="Add small description of yourslef.">
+  <!-- Add some coding keywords below, Ex: (React, CSS etc) -->
+  <meta name="keywords" content="Java, Python, HTML, CSS" />
+  <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+
+  <!-- ***** Header ***** -->
+
+  <header class="header" role="banner" id="top">
+    <div class="row">
+      <nav class="nav" role="navigation">
+        <ul class="nav__items">
+          <li class="nav__item"><a href="#work" class="nav__link">Work</a></li>
+          <li class="nav__item"><a href="#skills" class="nav__link">Skills</a></li>
+          <li class="nav__item">
+            <a href="#about" class="nav__link">About</a>
+          </li>
+          <li class="nav__item">
+            <a href="#contact" class="nav__link">Contact</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="header__text-box row">
+      <div class="header__text">
+        <h1 class="heading-primary">
+          <span>Azgaoui Omar Ziyad</span>
+        </h1>
+        <p>An aspiring computer scientist studying in Lausanne, Switzerland.</p>
+        <a href="#contact" class="btn btn--pink">Get in touch</a>
+      </div>
+    </div>
+  </header>
+
+  <main role="main">
+
+    <!-- ***** Work ***** -->
+
+    <section class="work" id="work">
+      <!-- Modal pour afficher les images en grand -->
+      <div id="galleryModal" class="gallery-modal">
+        <button class="close-button">&times;</button> <!-- déplacé ici -->
+        <div class="gallery-content">
+          <button class="prev">&#10094;</button>
+          <button class="next">&#10095;</button>
+          <div class="slider"></div>
+          <div class="dots"></div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <h2>My Work</h2>
+        <div class="work__boxes">
+
+          <!-- Each div with the work__box class is a project. -->
+
+          <div class="work__box">
+            <div class="work__text">
+              <h3>ReCHor</h3>
+              <p>
+                A route-finding system using the Connection Scan Algorithm (CSA), built for public transit networks. 
+                Includes GUI, UMAP export, and iCalendar integration.
+              </p>
+              <ul class="work__list">
+                <li>Java</li>
+                <li>CSS</li>
+              </ul>
+
+              <div class="work__links">
+                <a href="https://github.com/AZOGOAT/Portfolio/tree/main/Projects/ReCHor" class="link__text" target="_blank" rel="noopener noreferrer">
+                  Visit Site <span>&rarr;</span>
+                </a>
+                <a href="https://github.com/AZOGOAT/Portfolio" title="View Source Code" target="_blank" rel="noopener noreferrer">
+                  <img src="./images/svg/github.svg" class="work__code" alt="GitHub">
+                </a>
+              </div>
+            </div>
+            <div class="work__image-box">
+              <div class = "slider-container">
+                <div class = "slider">
+                  <img src="./images/projects/ReCHor/rechor-gui.png" class="work__image" alt="Project 1" />
+                  <img src="./images/projects/ReCHor/umap.png" class="work__image" alt="Project 2" />
+                  <img src="./images/projects/ReCHor/icalendar.png" class="work__image" alt="Project 3" />
+                  <video src="./images/projects/ReCHor/rechor-final-demo.mp4" class="work__image" controls muted playsinline></video>
+                </div>
+                <button class="prev">&#10094;</button>
+                <button class="next">&#10095;</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="work__box">
+            <div class="work__text">
+              <h3>ICMonGame</h3>
+              <p>
+                A turn-based mini-RPG inspired by Pokémon, where users create characters, explore a map, and engage in 
+                dynamic Java-based battles.
+              </p>
+              <ul class="work__list">
+                <li>Java</li>
+              </ul>
+
+              <div class="work__links">
+                <a href="https://github.com/AZOGOAT/Portfolio/tree/main/Projects/ICMonGame" class="link__text" target="_blank" rel="noopener noreferrer">
+                  Visit Site <span>&rarr;</span>
+                </a>
+                <a href="https://github.com/AZOGOAT/Portfolio" target="_blank" rel="noopener noreferrer">
+                  <img src="./images/svg/github.svg" class="work__code" title="View Source Code" alt="GitHub">
+                </a>
+              </div>
+            </div>
+            <div class="work__image-box">
+              <div class = "slider-container">
+                <div class = "slider">
+                  <img src="./images/projects/ICMonGame/intro.png" class="work__image" alt="Project 1" />
+                  <img src="./images/projects/ICMonGame/jeu1.png" class="work__image" alt="Project 2" />
+                  <img src="./images/projects/ICMonGame/jeuWater.png" class="work__image" alt="Project 3" />
+                  <img src="./images/projects/ICMonGame/jeuDiscu.png" class="work__image" alt="Project 4" />
+                  <video src="./images/projects/ICMonGame/jeu-démo.mp4" class="work__image" controls muted playsinline></video>
+                </div>
+                <button class="prev">&#10094;</button>
+                <button class="next">&#10095;</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="work__box">
+            <div class="work__text">
+              <h3>Portfolio</h3>
+              <p>
+                A fully responsive personal portfolio site built from template with custom sliders, modals, and dynamic 
+                gallery features.
+              </p>
+              <ul class="work__list">
+                <li>JavaScript</li>
+                <li>HTML</li>
+                <li>CSS</li>
+              </ul>
+
+              <div class="work__links">
+                <a href="https://github.com/AZOGOAT/Portfolio/tree/main" class="link__text" target="_blank" rel="noopener noreferrer">
+                  Visit Site <span>&rarr;</span>
+                </a>
+                <a href="https://github.com/AZOGOAT/Portfolio">
+                  <img src="./images/svg/github.svg" class="work__code" title="View Source Code" alt="GitHub">
+                </a>
+              </div>
+            </div>
+            <div class="work__image-box">
+              <video 
+              src="./images/projects/Portfolio/démo.mp4"
+              class="work__image"
+              autoplay
+              loop
+              muted
+              playsinline
+            ></video>
+            </div>
+          </div>
+
+          <div class="work__box">
+            <div class="work__text">
+              <h3>Pendu</h3>
+              <p>
+                A clean, interactive Hangman game in Python with multiple difficulty levels and polished visuals for each 
+                game state.
+              </p>
+              <ul class="work__list">
+                <li>Python</li>
+              </ul>
+
+              <div class="work__links">
+                <a href="https://github.com/AZOGOAT/Portfolio/tree/main/Projects/Pendu" class="link__text" target="_blank" rel="noopener noreferrer">
+                  Visit Site <span>&rarr;</span>
+                </a>
+                <a href="https://github.com/AZOGOAT/Portfolio" target="_blank" rel="noopener noreferrer">
+                  <img src="./images/svg/github.svg" class="work__code" title="View Source Code" alt="GitHub">
+                </a>
+              </div>
+            </div>
+            <div class="work__image-box">
+              <div class = "slider-container">
+                <div class = "slider">
+                  <img src="./images/projects/Pendu/intro.png" class="work__image" alt="Project 1" />
+                  <img src="./images/projects/Pendu/niveaux.png" class="work__image" alt="Project 2" />
+                  <img src="./images/projects/Pendu/jeu.png" class="work__image" alt="Project 3" />
+                  <img src="./images/projects/Pendu/fin.png" class="work__image" alt="Project 4" />
+                  <img src="./images/projects/Pendu/re-jeu.png" class="work__image" alt="Project 5" />
+                </div>
+                <button class="prev">&#10094;</button>
+                <button class="next">&#10095;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ***** Skills ***** -->
+    <section class="skills" id="skills">
+      <div class="row">
+        <h2>Skills</h2>
+          <div class="skills__logos">
+            <img src="./images/logos/java.png" class="skills__logo" alt="Java" title="Java">
+            <img src="./images/logos/python.png" class="skills__logo" alt="Python" title="Python">
+            <img src="./images/logos/html.png" class="skills__logo" alt="HTML" title="HTML5">
+            <img src="./images/logos/css.png" class="skills__logo" alt="CSS" title="CSS3">
+            <img src="./images/logos/verilog.png" class="skills__logo" alt="Verilog" title="Verilog HDL">
+          </div>
+      </div>
+    </section>
+
+
+    <!-- ***** About ***** -->
+
+    <section class="about" id="about">
+      <div class="row">
+        <h2>About Me</h2>
+        <div class="about__content">
+          <div class="about__text">
+            <!-- Replace the below paragraph with info about yourself -->
+            <p>
+              Hey there! I’m Omar 👋 — a computer science student at EPFL who loves learning by building things 🛠️.
+              I’m passionate about crafting cool projects, diving into new tools, and figuring out how systems 
+              really tick under the hood 🤓. When I’m not coding, you’ll probably find me chasing waves 🏄‍♂️, going for a 
+              run 🏃‍♂️, or dreaming up fresh ideas to bring to life. 
+              Right now, I’m on the lookout for an internship where I can grow, team up with awesome people, and make a 
+              real impact — all with curiosity, drive, and good vibes 🚀.
+            </p>
+            <!-- Provide a link to your resume -->
+            <a href="assets/CV.pdf" class="btn" target="_blank" rel="noopener noreferrer">📄My Resume</a>
+          </div>
+
+          <div class="about__photo-container">
+            <a href="https://youtu.be/dQw4w9WgXcQ?si=ZPxhp3yfk-oAy5Jh" target="_blank" rel="noopener noreferrer">
+              <img class="about__photo" src="./images/IMG_6745.jpg" alt="" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ***** Contact ***** -->
+
+  <section class="contact" id="contact">
+    <div class="row">
+      <h2>Get in Touch</h2>
+      <div class="contact__info">
+        <p>
+          I’m currently a computer science student at EPFL, looking for an internship where 
+          I can apply and further develop the skills I’ve gained through academic projects and personal 
+          initiatives. If you’re seeking someone motivated, curious, and eager to learn, feel free 
+          to get in touch — whether it’s for a potential opportunity, a question, or simply to connect.
+          You’ll find my Resume above with more details about my background. The fastest way to reach me is via email. 
+          I’ll be glad to hear from you. 😊
+        </p>
+        <!-- Replace the email with yours -->
+        <a href="mailto:omar.azgaoui@epfl.ch?cc=omarziyad.agzaoui2005@gmail.com" class="btn">📬 omar.azgaoui@epfl.ch / omarziyad.agzaoui2005@gmail.com </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ***** Footer ***** -->
+
+  <footer role="contentinfo" class="footer">
+    <div class="row">
+      <!-- Update the links to point to your accounts -->
+      <ul class="footer__social-links">
+        <li class="footer__social-link-item">
+          <a href="https://github.com/AZOGOAT" title="Link to Github Profile">
+            <img src="./images/svg/github.svg" class="footer__social-image" alt="Github">
+          </a>
+        </li>
+        <li class="footer__social-link-item">
+          <a href="https://codepen.io/nisar_hassan" title="Link to Whatsapp Profile">
+            <img src="./images/svg/whatsapp.svg" class="footer__social-image" alt="Whatsapp">
+          </a>
+        </li>
+        <li class="footer__social-link-item">
+          <a href="https://www.linkedin.com/in/omar-ziyad-azgaoui-7b4451272?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BcsyYMvGKQ5yu4elmWn86Yw%3D%3D">
+            <img src="./images/svg/linkedin.svg" title="Link to Linkedin Profile" class="footer__social-image" alt="Linkedin">
+          </a>
+        </li>
+      </ul>
+
+      <p class="footer__quote">
+        <em>"Curiosity didn’t kill the cat. It built the app."</em><br />
+        <span style="font-size: 0.9em; opacity: 0.7;">– Anonymous, but probably sleep-deprived</span>
+      </p>
+
+    </div>
+  </footer>
+
+  <a href="#top" class="back-to-top" title="Back to Top">
+    <img src="./images/svg/arrow-up.svg" alt="Back to Top" class="back-to-top__image"/>
+  </a>
+  <!-- WhatsApp QR Modal -->
+  <div id="whatsappModal" class="qr-modal">
+  <span class="qr-modal__close">&times;</span>
+  <img class="qr-modal__image" src="./images/QR-Whatsapp.jpg" alt="WhatsApp QR Code">
+</div>
+
+  <script src="./index.js"></script>
+</body>
+
+</html>
