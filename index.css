@@ -608,6 +608,92 @@ body:not(.user-is-tabbing) a:focus {
     }
 }
 
+.about__photo {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.about__photo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 50, 88, 0.4);
+}
+
+.resume-dropdown {
+  position: relative;
+  display: inline-block;
+}
+.resume-dropdown:hover .resume-menu {
+  display: block;
+}
+.resume-dropdown:hover .resume-toggle {
+  border-color: var(--pink);
+  background: rgba(255, 50, 88, 0.4);
+  color: var(--white); 
+}
+
+.resume-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--black);
+  border: 1px solid var(--pink);
+  border-radius: 4px;
+  z-index: 10;
+}
+
+.resume-menu .resume-option {
+  display: block;
+  padding: 0.8rem 1.2rem;
+  color: var(--white);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.resume-menu .resume-option:hover {
+  color: var(--pink);
+  background: rgba(255, 50, 88, 0.2);
+}
+
+.cv-modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+}
+.cv-content {
+  width: 90%;
+  max-width: 800px;
+  height: 80%;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cv-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.cv-modal__close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 4rem;
+  color: var(--white);
+  cursor: pointer;
+  transition: 0.2s;
+}
+.cv-modal__close:hover {
+  color: var(--pink);
+}
+
+
 /* --------------------------------------- */
 /* ----- Contact ----- */
 /* --------------------------------------- */
@@ -655,17 +741,6 @@ body:not(.user-is-tabbing) a:focus {
     .footer {
         padding: var(--gutter-medium) 0;
     } 
-}
-
-.about__photo {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 12px;
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-}
-
-.about__photo:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255, 50, 88, 0.4);
 }
 
 /* ===== WhatsApp QR Modal ===== */
@@ -783,9 +858,9 @@ body:not(.user-is-tabbing) a:focus {
 
 /* Effet au survol du conteneur du slider */
 .slider-container:hover {
-  transform: scale(1.05);  /* légère élévation comme .about__photo:hover:contentReference[oaicite:1]{index=1} */
-  box-shadow: 0 0 20px rgba(255, 50, 88, 0.4);  /* halo rose doux */
-  border: 1px solid rgba(255, 50, 88, 0.25);    /* contour rose clair */
+  transform: scale(1.05);  
+  box-shadow: 0 0 20px rgba(255, 50, 88, 0.4);  
+  border: 1px solid rgba(255, 50, 88, 0.4);  
   border-radius: 1.5rem;  /* coin arrondi pour épouser l'image */
 }
 
@@ -825,8 +900,8 @@ body:not(.user-is-tabbing) a:focus {
 
 /* Neutraliser le survol des images dans la galerie modale */
 .gallery-modal .slider img {
-  object-fit: contain; /* l’image occupe l’espace sans être coupée */
-  pointer-events: none;    /* empêche les clics et les hover */
+  object-fit: contain;
+  pointer-events: none;  
   cursor: default;
 }
 .gallery-modal .slider img:hover {
