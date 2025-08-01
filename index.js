@@ -289,3 +289,34 @@ document.querySelectorAll('.slider-container').forEach(container => {
     });
   });
 });
+
+const resumeToggle = document.querySelector('.resume-toggle');
+const resumeMenu   = document.querySelector('.resume-menu');
+const resumeOptions = document.querySelectorAll('.resume-option');
+
+const cvModal  = document.getElementById('cvModal');
+const cvFrame  = document.getElementById('cvFrame');
+const cvClose  = document.querySelector('.cv-modal__close');
+
+resumeOptions.forEach(option => {
+  option.addEventListener('click', (e) => {
+    e.preventDefault();
+    const pdfFile = option.dataset.file;
+    if (pdfFile) {
+      cvFrame.src = pdfFile;
+    }
+    cvModal.style.display = 'flex';
+  });
+});
+
+cvClose.addEventListener('click', () => {
+  cvModal.style.display = 'none';
+  cvFrame.src = '';
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target === cvModal) {
+    cvModal.style.display = 'none';
+    cvFrame.src = '';
+  }
+});

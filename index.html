@@ -6,13 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="shortcut icon" type="image/png" href="./images/logos/favicon.png" />
 
-  <!-- Put your site title here -->
   <title>
     Portfolio | Azgaoui Omar Ziyad
   </title>
 
   <meta name="description" content="Add small description of yourslef.">
-  <!-- Add some coding keywords below, Ex: (React, CSS etc) -->
   <meta name="keywords" content="Java, Python, HTML, CSS" />
   <link rel="stylesheet" href="index.css" />
 </head>
@@ -235,7 +233,6 @@
         <h2>About Me</h2>
         <div class="about__content">
           <div class="about__text">
-            <!-- Replace the below paragraph with info about yourself -->
             <p>
               Hey there! I’m Omar 👋 — a computer science student at EPFL who loves learning by building things 🛠️.
               I’m passionate about crafting cool projects, diving into new tools, and figuring out how systems 
@@ -244,8 +241,13 @@
               Right now, I’m on the lookout for an internship where I can grow, team up with awesome people, and make a 
               real impact — all with curiosity, drive, and good vibes 🚀.
             </p>
-            <!-- Provide a link to your resume -->
-            <a href="assets/CV.pdf" class="btn" target="_blank" rel="noopener noreferrer">📄My Resume</a>
+            <div class="resume-dropdown">
+              <a href="#" class="btn resume-toggle" onclick="event.preventDefault()">📄 My Resume ▼</a>
+              <div class="resume-menu">
+                <a href="#" class="resume-option" data-file="assets/Short - CV - Université - Stage.pdf">Version courte</a>
+                <a href="#" class="resume-option" data-file="assets/Long - CV - Université - Stage.pdf">Version longue</a>
+              </div>
+            </div>
           </div>
 
           <div class="about__photo-container">
@@ -272,7 +274,6 @@
           You’ll find my Resume above with more details about my background. The fastest way to reach me is via email. 
           I’ll be glad to hear from you. 😊
         </p>
-        <!-- Replace the email with yours -->
         <a href="mailto:omar.azgaoui@epfl.ch?cc=omarziyad.agzaoui2005@gmail.com" class="btn">📬 omar.azgaoui@epfl.ch / omarziyad.agzaoui2005@gmail.com </a>
       </div>
     </div>
@@ -282,7 +283,6 @@
 
   <footer role="contentinfo" class="footer">
     <div class="row">
-      <!-- Update the links to point to your accounts -->
       <ul class="footer__social-links">
         <li class="footer__social-link-item">
           <a href="https://github.com/AZOGOAT" title="Link to Github Profile">
@@ -314,11 +314,20 @@
   </a>
   <!-- WhatsApp QR Modal -->
   <div id="whatsappModal" class="qr-modal">
-  <span class="qr-modal__close">&times;</span>
-  <img class="qr-modal__image" src="./images/QR-Whatsapp.jpg" alt="WhatsApp QR Code">
-</div>
+    <span class="qr-modal__close">&times;</span>
+    <img class="qr-modal__image" src="./images/QR-Whatsapp.jpg" alt="WhatsApp QR Code">
+  </div>
+
+  <!-- CV Modal -->
+  <div id="cvModal" class="cv-modal">
+    <span class="cv-modal__close">&times;</span>
+    <div class="cv-content">
+      <iframe id="cvFrame" class="cv-frame" src="" frameborder="0"></iframe>
+    </div>
+  </div>
 
   <script src="./index.js"></script>
+
 </body>
 
 </html>
