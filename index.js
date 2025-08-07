@@ -326,34 +326,39 @@ window.addEventListener('click', (e) => {
   Google Analytics
  ---------------------------------------- */
 
-// TRACKING DES CLICS SUR IMAGES/VIDÉOS (carrousels “Work”)
-document.querySelectorAll('.slider-container .slider img, .slider-container .slider video').forEach(media => {
+// TRACKING DES CLICS SUR IMAGES/VIDÉOS 
+document.querySelectorAll('.work__box .slider img, .work__box .slider video').forEach(media => {
   media.addEventListener('click', () => {
-    const titre = media.alt || media.src; // titre si "alt" disponible, sinon URL
-    // envoie un événement d’image cliquée
+    // On remonte jusqu'au bloc .work__box pour récupérer le titre <h3>
+    const box         = media.closest('.work__box');
+    const projectName = box ? box.querySelector('h3').textContent.trim() : 'Inconnu';
+    // On récupère l'indice de l'image/vidéo dans le carrousel (facultatif)
+    const index = Array.from(media.parentElement.children).indexOf(media) + 1;
     gtag('event', 'image_click', {
       event_category: 'Galerie',
-      event_label: titre,
-      value: 1
+      project_name: projectName,
+      media_index: index,
+      media_type: media.tagName.toLowerCase(), // img ou video
+      media_source: media.src
     });
   });
 });
 
-// TRACKING DES CLICS SUR LES LIENS
-document.querySelectorAll('a').forEach(lien => {
+// TRACKING DES CLICS SUR LES LIENS "Visit Site"
+document.querySelectorAll('.work__box .work__links > a.link__text').forEach(lien => {
   lien.addEventListener('click', () => {
-    const url = lien.href;
-    const libelle = lien.textContent.trim().substring(0, 100);
-    gtag('event', 'link_click', {
+    const box         = lien.closest('.work__box');
+    const projectName = box ? box.querySelector('h3').textContent.trim() : 'Inconnu';
+    gtag('event', 'visit_project_link', {
       event_category: 'Navigation',
-      event_label: libelle,
-      link_url: url
+      project_name: projectName,
+      link_url: lien.href
     });
   });
 });
+
 
 // MESURER LE TEMPS PASSÉ PAR SECTION
-// Mesurer le temps passé par section (adapté à vos ids existants)
 const sections = {
   work:   { element: document.getElementById('work'),   start: null, total: 0 },
   skills: { element: document.getElementById('skills'), start: null, total: 0 },
