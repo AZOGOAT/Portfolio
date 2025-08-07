@@ -320,3 +320,156 @@ window.addEventListener('click', (e) => {
     cvFrame.src = '';
   }
 });
+
+
+/* -----------------------------------------
+  Google Analytics
+ ---------------------------------------- */
+
+// TRACKING DES CLICS SUR IMAGES/VIDÉOS (carrousels “Work”)
+document.querySelectorAll('.slider-container .slider img, .slider-container .slider video').forEach(media => {
+  media.addEventListener('click', () => {
+    const titre = media.alt || media.src; // titre si "alt" disponible, sinon URL
+    // envoie un événement d’image cliquée
+    gtag('event', 'image_click', {
+      event_category: 'Galerie',
+      event_label: titre,
+      value: 1
+    });
+  });
+});
+
+// TRACKING DES CLICS SUR LES LIENS
+document.querySelectorAll('a').forEach(lien => {
+  lien.addEventListener('click', () => {
+    const url = lien.href;
+    const libelle = lien.textContent.trim().substring(0, 100);
+    gtag('event', 'link_click', {
+      event_category: 'Navigation',
+      event_label: libelle,
+      link_url: url
+    });
+  });
+});
+
+// MESURER LE TEMPS PASSÉ PAR SECTION
+// Mesurer le temps passé par section (adapté à vos ids existants)
+const sections = {
+  work:   { element: document.getElementById('work'),   start: null, total: 0 },
+  skills: { element: document.getElementById('skills'), start: null, total: 0 },
+  about:  { element: document.getElementById('about'),  start: null, total: 0 },
+  contact:{ element: document.getElementById('contact'),start: null, total: 0 },
+};
+
+// Détecter l’entrée et la sortie d’une section dans la fenêtre
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const sectionKey = entry.target.dataset.section; 
+    const obj = sections[sectionKey];
+    if (!obj) return;
+    if (entry.isIntersecting) {
+      // L’utilisateur voit la section → démarrer le chrono
+      obj.start = performance.now();
+    } else {
+      // L’utilisateur quitte la section → ajouter la durée
+      if (obj.start !== null) {
+        obj.total += performance.now() - obj.start;
+        obj.start = null;
+      }
+    }
+  });
+}, { threshold: 0.5 }); // section considérée comme “vue” à 50 % de la hauteur
+
+
+Object.keys(sections).forEach(key => {
+  const el = sections[key].element;
+  if (el) {
+    el.dataset.section = key;
+    observer.observe(el);
+  }
+});
+
+// Quand la page est sur le point d’être quittée, envoyer les durées
+window.addEventListener('beforeunload', () => {
+  Object.keys(sections).forEach(key => {
+    const obj = sections[key];
+    if (obj.start !== null) {
+      // ajouts en cours si la section est encore visible
+      obj.total += performance.now() - obj.start;
+    }
+    const dureeSec = Math.round(obj.total / 1000);
+    if (dureeSec > 0) {
+      gtag('event', 'section_engagement', {
+        event_category: 'Temps par section',
+        section_name: key,
+        duration_seconds: dureeSec
+      });
+    }
+  });
+});
+
+//Suivre l’ouverture du menu “Resume” et le téléchargement des CV
+document.querySelector('.resume-toggle').addEventListener('click', () => {
+  gtag('event', 'resume_open', { event_category: 'CV' });
+});
+document.querySelectorAll('.resume-option').forEach(option => {
+  option.addEventListener('click', () => {
+    const version = option.dataset.file.includes('Short') ? 'court' : 'long';
+    gtag('event', 'cv_download', {
+      event_category: 'CV',
+      version: version
+    });
+  });
+});
+
+//Mesurer la profondeur de défilement (scroll depth)
+let lastScrollEvent = 0;
+window.addEventListener('scroll', () => {
+  const scrollPercent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+  const percents = [0.25, 0.5, 0.75, 1];
+  percents.forEach(p => {
+    if (scrollPercent >= p && lastScrollEvent < p) {
+      gtag('event', 'scroll_depth', {
+        event_category: 'Engagement',
+        percent: p * 100
+      });
+      lastScrollEvent = p;
+    }
+  });
+});
+
+// Clic sur l’icône GitHub
+const githubIcon = document.querySelector('.footer__social-image[alt="Github"]');
+if (githubIcon) {
+  githubIcon.addEventListener('click', () => {
+    gtag('event', 'social_github_click', {
+      event_category: 'Réseaux sociaux',
+      event_label: 'GitHub',
+      platform_url: 'https://github.com/AZOGOAT'
+    });
+  });
+}
+
+// Clic sur l’icône WhatsApp
+const whatsappIcon = document.querySelector('.footer__social-image[alt="Whatsapp"]');
+if (whatsappIcon) {
+  whatsappIcon.addEventListener('click', () => {
+    gtag('event', 'social_whatsapp_click', {
+      event_category: 'Réseaux sociaux',
+      event_label: 'WhatsApp'
+      // pas de platform_url car le lien ouvre simplement le QR code
+    });
+  });
+}
+
+// Clic sur l’icône LinkedIn
+const linkedinIcon = document.querySelector('.footer__social-image[alt="Linkedin"]');
+if (linkedinIcon) {
+  linkedinIcon.addEventListener('click', () => {
+    gtag('event', 'social_linkedin_click', {
+      event_category: 'Réseaux sociaux',
+      event_label: 'LinkedIn',
+      platform_url: 'https://www.linkedin.com/in/omar-ziyad-azgaoui'
+    });
+  });
+}
