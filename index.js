@@ -290,6 +290,26 @@ document.querySelectorAll('.slider-container').forEach(container => {
   });
 });
 
+/* -----------------------------------------
+  Skills Tab Navigation
+ ---------------------------------------- */
+document.querySelectorAll('.section-header button').forEach(button => {
+  button.addEventListener('click', function () {
+    // Désactiver tous les onglets et sections
+    document.querySelectorAll('.section-header button').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.section-content').forEach(content => content.classList.remove('active'));
+    // Activer l’onglet cliqué
+    this.classList.add('active');
+    // Afficher la section correspondante
+    const targetId = this.getAttribute('data-target');
+    document.getElementById(targetId).classList.add('active');
+  });
+});
+
+
+/* -----------------------------------------
+  Resume Modal Logic
+ ---------------------------------------- */
 const resumeToggle = document.querySelector('.resume-toggle');
 const resumeMenu   = document.querySelector('.resume-menu');
 const resumeOptions = document.querySelectorAll('.resume-option');
@@ -321,6 +341,31 @@ window.addEventListener('click', (e) => {
   }
 });
 
+
+/* -----------------------------------------
+  Contact Form Submission
+ ---------------------------------------- */
+document.getElementById("contactForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const form = e.target;
+
+  fetch(form.action, {
+    method: "POST",
+    body: new FormData(form),
+    headers: {
+      Accept: "application/json"
+    }
+  }).then(response => {
+    if (response.ok) {
+      alert("🎉 Thank you! Your message has been sent.");
+      form.reset();
+    } else {
+      alert("⚠️ Oops! There was a problem submitting your form.");
+    }
+  }).catch(error => {
+    alert("❌ Something went wrong. Please try again later.");
+  });
+});
 
 /* -----------------------------------------
   Google Analytics
