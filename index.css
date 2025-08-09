@@ -448,237 +448,237 @@ body:not(.user-is-tabbing) a:focus {
 /* --------------------------------------- */
 
 .work__box {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 @media(max-width: 900px) {
-  .work__box {
-    align-items: initial;
-    flex-direction: column-reverse;
-  }
+    .work__box {
+        align-items: initial;
+        flex-direction: column-reverse;
+    }
 }
 
 .work__box:not(:last-child) {
-  margin-bottom: 25rem;
+    margin-bottom: 25rem;
 }
 
 @media(max-width: 500px) {
-  .work__box:not(:last-child) {
-    margin-bottom: 20rem;
-  }
+    .work__box:not(:last-child) {
+        margin-bottom: 20rem;
+    }
 }
 
 .work__links {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .work__text {
-  flex: 0 0 30%;
+    flex: 0 0 30%;
 }
 
 .work__list {
-  list-style-position: inside;
-  margin-bottom: var(--gutter-normal);
+    list-style-position: inside;
+    margin-bottom: var(--gutter-normal);
 }
 
 .work__code {
-  display: block;
-  height: 3rem;
-  margin-left: var(--gutter-normal);
-  transition: all .3s;
+    display: block;
+    height: 3rem;
+    margin-left: var(--gutter-normal);
+    transition: all .3s;
 }
 
 .work__code:hover {
-  transform: scale(1.2);
+    transform: scale(1.2);
 }
 
 .work__image-box {
-  margin-bottom: var(--gutter-normal);
+    margin-bottom: var(--gutter-normal);
 }
 
-.work__image-box > video {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 1.5rem;
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.work__image-box>video {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 1.5rem;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 
 @media(min-width: 901px) {
-  .work__image-box {
-    flex: 1;
-    margin: 0 0 0 10rem;
-  }
+    .work__image-box {
+        flex: 1;
+        margin: 0 0 0 10rem;
+    }
 }
 
 @media(max-width: 900px) {
-  .work__code {
-    height: 4rem;
-  }
+    .work__code {
+        height: 4rem;
+    }
 }
 
 
 /* ====== Slider (shared) ====== */
 .slider-container {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
 }
 
 .slider-container:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255, 50, 88, 0.4);
-  border: 1px solid rgba(255, 50, 88, 0.4);
-  border-radius: 1.5rem;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 50, 88, 0.4);
+    border: 1px solid rgba(255, 50, 88, 0.4);
+    border-radius: 1.5rem;
 }
 
 .slider {
-  display: flex;
-  transition: transform 0.5s ease-in-out;
+    display: flex;
+    transition: transform 0.5s ease-in-out;
 }
 
 .slider img,
 .slider video {
-  flex-shrink: 0;
-  width: 100%;
-  object-fit: cover;
-  border-radius: 1.5rem;
+    flex-shrink: 0;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 1.5rem;
 }
 
 .slider img {
-  cursor: pointer;
-  box-shadow: 0 0 0 rgba(255, 50, 88, 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 0 0 rgba(255, 50, 88, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 
 /* ====== Slider Dots & Arrows (shared) ====== */
 .dot {
-  width: 0.8rem;
-  height: 0.8rem;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.4);
-  cursor: pointer;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
 }
 
 .dot.active {
-  background-color: var(--pink);
+    background-color: var(--pink);
 }
 
 .prev,
 .next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 3rem;
-  color: var(--white);
-  cursor: pointer;
-  z-index: 1001;
-  padding: 0 1rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 3rem;
+    color: var(--white);
+    cursor: pointer;
+    z-index: 1001;
+    padding: 0 1rem;
 }
 
 .slider-container .prev {
-  left: 1rem;
+    left: 1rem;
 }
 
 .slider-container .next {
-  right: 1rem;
+    right: 1rem;
 }
 
 .slider-container .dots {
-  position: absolute;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 0.6rem;
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.6rem;
 }
 
 
 /* ====== Gallery Modal ====== */
 .gallery-modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(4px);
-  justify-content: center;
-  align-items: center;
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
 }
 
 .gallery-modal.active {
-  display: flex;
+    display: flex;
 }
 
 .gallery-content {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-  height: 80%;
-  overflow: hidden;
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 80%;
+    overflow: hidden;
 }
 
 .gallery-content .slider {
-  display: flex;
-  height: 100%;
-  transition: transform 0.5s ease;
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s ease;
 }
 
 .gallery-modal .slider img {
-  object-fit: contain;
-  pointer-events: none;
-  cursor: default;
+    object-fit: contain;
+    pointer-events: none;
+    cursor: default;
 }
 
 .gallery-modal .close-button {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  font-size: 3rem;
-  background: none;
-  border: none;
-  color: var(--white);
-  cursor: pointer;
-  z-index: 1001;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-size: 3rem;
+    background: none;
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    z-index: 1001;
 }
 
 .gallery-content .prev,
 .gallery-content .next {
-  font-size: 4rem;
-  position: fixed;
+    font-size: 4rem;
+    position: fixed;
 }
 
 .gallery-content .prev {
-  left: 2rem;
+    left: 2rem;
 }
 
 .gallery-content .next {
-  right: 2rem;
+    right: 2rem;
 }
 
 .gallery-content .dots {
-  position: absolute;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 0.6rem;
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.6rem;
 }
 
 body:has(.gallery-modal.active) .slider-container .prev,
 body:has(.gallery-modal.active) .slider-container .next {
-  display: none !important;
+    display: none !important;
 }
 
 
@@ -1228,4 +1228,260 @@ body:has(.gallery-modal.active) .slider-container .next {
 
 .qr-modal__close:hover {
     color: var(--pink);
+}
+
+/* ===== Cookie Banner & Privacy Modal (optimized) ===== */
+
+/* Helper vars (local to banner area) */
+#cookie-banner {
+    --sep-white-35: rgba(255, 255, 255, 0.35);
+    --sep-white-15: rgba(255, 255, 255, 0.15);
+    --pink-18: rgba(255, 50, 88, 0.18);
+    --pink-22: rgba(255, 50, 88, 0.22);
+    --pink-25: rgba(255, 50, 88, 0.25);
+    --pink-35: rgba(255, 50, 88, 0.35);
+}
+
+/* Hidden by default; becomes visible with .show */
+#cookie-banner {
+    position: fixed;
+    inset: auto 20px 20px auto;
+    /* bottom-right */
+    max-width: 420px;
+    display: none;
+
+    background: rgba(12, 12, 12, 0.86);
+    color: var(--white-1);
+    border: 1px solid var(--pink-18);
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem 1.2rem 1.2rem;
+    z-index: 1000;
+
+    /* layout */
+    display: none;
+    grid-template-columns: 36px 1fr auto;
+    grid-template-rows: auto auto;
+    grid-column-gap: 1rem;
+    grid-row-gap: .4rem;
+
+    /* fx */
+    box-shadow: 0 10px 30px var(--pink-25), 0 2px 8px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+    animation: cookieSlideIn .45s cubic-bezier(.16, .84, .44, 1);
+}
+
+#cookie-banner.show {
+    display: grid;
+}
+
+#cookie-banner .cookie-icon {
+    grid-row: 1 / span 2;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: rgba(255, 50, 88, 0.12);
+    border: 1px solid var(--pink-22);
+}
+
+#cookie-banner .cookie-text {
+    font-size: 1.35rem;
+    line-height: 1.55;
+}
+
+#cookie-banner .actions {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    grid-column: 2 / 4;
+}
+
+/* Buttons (shared rules first) */
+#cookie-banner .btn-ghost,
+#cookie-banner .btn-solid {
+    font-family: 'Jost', sans-serif;
+    border-radius: 10px;
+    padding: .6rem 1.1rem;
+    font-size: 1.3rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+}
+
+#cookie-banner .btn-ghost {
+    background: transparent;
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.14);
+}
+
+#cookie-banner .btn-ghost:hover {
+    border-color: rgba(255, 255, 255, 0.28);
+    transform: translateY(-1px);
+}
+
+#cookie-banner .btn-solid {
+    background: var(--pink);
+    color: #fff;
+    border-color: rgba(255, 50, 88, 0.6);
+    box-shadow: 0 4px 16px var(--pink-25);
+}
+
+#cookie-banner .btn-solid:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px var(--pink-35);
+}
+
+/* Inline link style in banner (used by #privacy-link too) */
+#cookie-banner a.link {
+    color: var(--white);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--sep-white-35);
+}
+
+#cookie-banner a.link:hover {
+    color: var(--pink);
+    border-bottom-color: var(--pink);
+}
+
+/* Learn more stacked with full-width dashed separator (clickable only on text) */
+.learn-more-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 2px;
+    width: 100%;
+}
+
+#privacy-link {
+    font-size: 0.85rem;
+    opacity: 0.5;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    /* keep only text clickable */
+    margin-bottom: 2px;
+}
+
+#privacy-link:hover {
+    opacity: 1;
+    color: var(--pink);
+}
+
+.separator-line {
+    width: 100%;
+    border-bottom: 1px dashed var(--sep-white-15);
+}
+
+@keyframes cookieSlideIn {
+    from {
+        transform: translateY(12px) scale(.98);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* --- Privacy Modal --- */
+#privacy-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    overflow-y: auto;
+}
+
+#privacy-content {
+    background: #0b0b0b;
+    color: var(--white-1);
+    width: min(860px, 92vw);
+    margin: 6rem auto;
+    padding: 3rem 2.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--pink-18);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55), 0 8px 24px rgba(255, 50, 88, 0.08);
+    line-height: 1.7;
+}
+
+#privacy-content h1 {
+    font-family: 'Jost', sans-serif;
+    color: var(--pink);
+    font-size: 2.6rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+#privacy-content h2 {
+    font-size: 2rem;
+    margin: 2rem 0 .6rem;
+    color: var(--white);
+    text-align: left;
+}
+
+#privacy-content h3 {
+    font-size: 1.7rem;
+    margin: 1.2rem 0 .4rem;
+    color: var(--white-1);
+    text-align: left;
+}
+
+#privacy-content p {
+    font-size: 1.45rem;
+    margin-bottom: 1.2rem;
+    text-align: justify;
+}
+
+#privacy-content ul {
+    list-style: disc;
+    padding-left: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+#privacy-content li {
+    font-size: 1.4rem;
+    margin-bottom: .6rem;
+}
+
+#privacy-content a {
+    color: var(--pink);
+    text-decoration: underline;
+}
+
+#privacy-content a:hover {
+    color: #ff5778;
+}
+
+#privacy-close {
+    float: right;
+    cursor: pointer;
+    font-size: 2.6rem;
+    font-weight: bold;
+    color: var(--white-1);
+    border-radius: 10px;
+    padding: .2rem .6rem;
+    transition: background-color .15s ease, color .15s ease;
+}
+
+#privacy-close:hover {
+    background: rgba(255, 50, 88, 0.15);
+    color: #fff;
+}
+
+/* Mobile tweaks */
+@media (max-width: 520px) {
+    #cookie-banner {
+        inset: auto 12px 12px 12px;
+        max-width: unset;
+    }
+}
+
+/* === Consent lock: prevent scroll until accepted === */
+html.consent-locked,
+body.consent-locked {
+    overflow: hidden !important;
+    height: 100%;
 }

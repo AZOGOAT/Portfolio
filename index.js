@@ -3,7 +3,7 @@
  ---------------------------------------- */
 
 const handleFirstTab = (e) => {
-  if(e.key === 'Tab') {
+  if (e.key === 'Tab') {
     document.body.classList.add('user-is-tabbing')
 
     window.removeEventListener('keydown', handleFirstTab)
@@ -63,26 +63,27 @@ if (whatsappLogo && qrModal && qrClose) {
     }
   });
 }
+
 document.querySelectorAll('.slider-container').forEach(container => {
   const slider = container.querySelector('.slider');
   let slides = slider.querySelectorAll('img, video');
 
-  // Cloner la première et la dernière image pour un effet "infini"
+  // Clone the first and last slide for an "infinite" effect
   const firstClone = slides[0].cloneNode(true);
-  const lastClone  = slides[slides.length - 1].cloneNode(true);
+  const lastClone = slides[slides.length - 1].cloneNode(true);
   slider.appendChild(firstClone);
   slider.insertBefore(lastClone, slides[0]);
 
-  // Mettre à jour la liste des slides après clonage
-  slides = slider.querySelectorAll('img, video'); // inclut les clones aussi
+  // Update the slide list after cloning
+  slides = slider.querySelectorAll('img, video'); // includes clones as well
 
   const totalSlides = slides.length;
-  let currentIndex  = 1; // on commence sur la 1ʳᵉ vraie image:contentReference[oaicite:1]{index=1}
+  let currentIndex = 1; // start on the first real slide
 
-  // Positionner le slider sur la 1ʳᵉ vraie image
+  // Position the slider on the first real slide
   slider.style.transform = `translateX(-${currentIndex * 100}%)`;
 
-  // Création des points (en ignorant les clones)
+  // Create the dots (ignoring clones)
   const dotsContainer = document.createElement('div');
   dotsContainer.classList.add('dots');
   for (let i = 0; i < totalSlides - 2; i++) {
@@ -90,7 +91,7 @@ document.querySelectorAll('.slider-container').forEach(container => {
     dot.classList.add('dot');
     if (i === currentIndex - 1) dot.classList.add('active');
     dot.addEventListener('click', () => {
-      currentIndex = i + 1; // +1 à cause du clone de début
+      currentIndex = i + 1; // +1 because of the first clone
       updateCarousel();
     });
     dotsContainer.appendChild(dot);
@@ -100,12 +101,12 @@ document.querySelectorAll('.slider-container').forEach(container => {
   function updateDots() {
     const dots = dotsContainer.querySelectorAll('.dot');
     dots.forEach((dot, i) => {
-      // L’index réel correspond à currentIndex-1 ; gérer les clones aux extrémités
+      // The actual index is currentIndex - 1; handle edge clones
       let activeIndex;
       if (currentIndex === 0) {
-        activeIndex = totalSlides - 3;            // clone de fin → dernière vraie image:contentReference[oaicite:2]{index=2}
+        activeIndex = totalSlides - 3;            // end clone → last real slide
       } else if (currentIndex === totalSlides - 1) {
-        activeIndex = 0;                         // clone de début → première vraie image:contentReference[oaicite:3]{index=3}
+        activeIndex = 0;                         // start clone → first real slide
       } else {
         activeIndex = currentIndex - 1;
       }
@@ -115,19 +116,19 @@ document.querySelectorAll('.slider-container').forEach(container => {
 
   function updateCarousel() {
     slider.style.transition = 'transform 0.5s ease';
-    slider.style.transform  = `translateX(-${currentIndex * 100}%)`;
+    slider.style.transform = `translateX(-${currentIndex * 100}%)`;
     updateDots();
   }
 
-  // Réinitialiser la position après l’animation lorsque l’on atteint un clone:contentReference[oaicite:4]{index=4}
+  // Reset the position after the animation when reaching a clone
   slider.addEventListener('transitionend', () => {
-    // Si on est allé au clone de fin (dernière diapositive), repositionner sur la 1ʳᵉ vraie image
+    // If we went to the end clone (last slide), reposition to the first real slide
     if (currentIndex === totalSlides - 1) {
       slider.style.transition = 'none';
       currentIndex = 1;
       slider.style.transform = `translateX(-${currentIndex * 100}%)`;
     }
-    // Si on est allé au clone de début (première diapositive), repositionner sur la dernière vraie image
+    // If we went to the start clone (first slide), reposition to the last real slide
     if (currentIndex === 0) {
       slider.style.transition = 'none';
       currentIndex = totalSlides - 2;
@@ -136,7 +137,7 @@ document.querySelectorAll('.slider-container').forEach(container => {
     updateDots();
   });
 
-  // Boutons
+  // Buttons
   container.querySelector('.next').addEventListener('click', () => {
     currentIndex++;
     updateCarousel();
@@ -147,32 +148,31 @@ document.querySelectorAll('.slider-container').forEach(container => {
   });
 });
 
-// Initialisation du modal
-const modal      = document.getElementById('galleryModal');
-const modalSlider= modal.querySelector('.slider');
-const modalDots  = modal.querySelector('.dots');
-const modalPrev  = modal.querySelector('.prev');
-const modalNext  = modal.querySelector('.next');
+// Modal initialization
+const modal = document.getElementById('galleryModal');
+const modalSlider = modal.querySelector('.slider');
+const modalDots = modal.querySelector('.dots');
+const modalPrev = modal.querySelector('.prev');
+const modalNext = modal.querySelector('.next');
 const modalClose = modal.querySelector('.close-button');
 
 function openGallery(slides, clickedIndex) {
-  // "slides" est une NodeList des images du carrousel cliqué (avec clones)
-  // "clickedIndex" est l’index dans cette NodeList de l’image sur laquelle on a cliqué
+  // "slides" is a NodeList of the clicked carousel’s images (with clones)
+  // "clickedIndex" is the index in that NodeList of the clicked image
 
-  // Préparer les données réelles en ignorant les clones
+  // Prepare real data ignoring clones
   const realCount = slides.length - 2; // 2 clones
   const imagesData = [];
   for (let i = 1; i <= realCount; i++) {
-  const el = slides[i];
-  imagesData.push({
-    src: el.src,
-    alt: el.alt || "",
-    type: el.tagName.toLowerCase()  // 'img' ou 'video'
-  });
-}
+    const el = slides[i];
+    imagesData.push({
+      src: el.src,
+      alt: el.alt || "",
+      type: el.tagName.toLowerCase()  // 'img' or 'video'
+    });
+  }
 
-
-  // Déterminer l’index réel à partir de l’index cliqué
+  // Determine the real index from the clicked index
   let startIndex;
   if (clickedIndex === 0) {
     startIndex = realCount - 1;
@@ -182,36 +182,35 @@ function openGallery(slides, clickedIndex) {
     startIndex = clickedIndex - 1;
   }
 
-  // Nettoyer le contenu précédent
+  // Clear previous content
   modalSlider.innerHTML = '';
-  modalDots.innerHTML   = '';
+  modalDots.innerHTML = '';
 
-  // Construire les slides avec clones (dernier, réels, premier) pour le modal:contentReference[oaicite:4]{index=4}
+  // Build slides with clones (last, reals, first) for the modal
   const slidesData = [
-    imagesData[imagesData.length - 1],  // clone du dernier
+    imagesData[imagesData.length - 1],  // last clone
     ...imagesData,
-    imagesData[0]                       // clone du premier
+    imagesData[0]                       // first clone
   ];
   slidesData.forEach(data => {
-  let element;
-  if (data.type === 'video') {
-    element = document.createElement('video');
-    element.src = data.src;
-    element.controls = true;
-    element.muted = true;
-    element.playsInline = true;
-    element.setAttribute('class', 'work__image');
-  } else {
-    element = document.createElement('img');
-    element.src = data.src;
-    element.alt = data.alt;
-    element.setAttribute('class', 'work__image');
-  }
-  modalSlider.appendChild(element);
-});
+    let element;
+    if (data.type === 'video') {
+      element = document.createElement('video');
+      element.src = data.src;
+      element.controls = true;
+      element.muted = true;
+      element.playsInline = true;
+      element.setAttribute('class', 'work__image');
+    } else {
+      element = document.createElement('img');
+      element.src = data.src;
+      element.alt = data.alt;
+      element.setAttribute('class', 'work__image');
+    }
+    modalSlider.appendChild(element);
+  });
 
-
-  // Créer les points indicateurs
+  // Create the indicator dots
   imagesData.forEach((_, i) => {
     const dot = document.createElement('span');
     dot.classList.add('dot');
@@ -223,13 +222,13 @@ function openGallery(slides, clickedIndex) {
     modalDots.appendChild(dot);
   });
 
-  // Index courant (tient compte des clones)
+  // Current index (includes clones)
   let currentIndex = startIndex + 1;
 
   function updateDots() {
     const dots = modalDots.querySelectorAll('.dot');
     dots.forEach((dot, i) => {
-      // index actif corrigé (0..realCount-1):contentReference[oaicite:5]{index=5}
+      // Corrected active index (0..realCount-1)
       let activeIndex;
       if (currentIndex === 0) {
         activeIndex = imagesData.length - 1;
@@ -244,11 +243,11 @@ function openGallery(slides, clickedIndex) {
 
   function updateModal(animate = true) {
     modalSlider.style.transition = animate ? 'transform 0.5s ease' : 'none';
-    modalSlider.style.transform  = `translateX(-${currentIndex * 100}%)`;
+    modalSlider.style.transform = `translateX(-${currentIndex * 100}%)`;
     updateDots();
   }
 
-  // Boucle infinie : repositionner sur les vraies images après la transition:contentReference[oaicite:6]{index=6}
+  // Infinite loop: reposition on real images after the transition
   modalSlider.addEventListener('transitionend', () => {
     if (currentIndex === 0) {
       modalSlider.style.transition = 'none';
@@ -262,7 +261,7 @@ function openGallery(slides, clickedIndex) {
     updateDots();
   });
 
-  // Navigation dans le modal
+  // Modal navigation
   modalNext.onclick = () => {
     currentIndex++;
     updateModal();
@@ -275,12 +274,12 @@ function openGallery(slides, clickedIndex) {
     modal.classList.remove('active');
   };
 
-  // Afficher le modal et positionner sur l’image cliquée
+  // Show the modal and position on the clicked image
   modal.classList.add('active');
   updateModal(false);
 }
 
-// Ajouter l’événement d’ouverture sur chaque image du carrousel de la page
+// Add the open event on each carousel image in the page
 document.querySelectorAll('.slider-container').forEach(container => {
   const slides = container.querySelectorAll('.slider img, .slider video');
   slides.forEach((img, index) => {
@@ -295,12 +294,12 @@ document.querySelectorAll('.slider-container').forEach(container => {
  ---------------------------------------- */
 document.querySelectorAll('.section-header button').forEach(button => {
   button.addEventListener('click', function () {
-    // Désactiver tous les onglets et sections
+    // Deactivate all tabs and sections
     document.querySelectorAll('.section-header button').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.section-content').forEach(content => content.classList.remove('active'));
-    // Activer l’onglet cliqué
+    // Activate the clicked tab
     this.classList.add('active');
-    // Afficher la section correspondante
+    // Show the corresponding section
     const targetId = this.getAttribute('data-target');
     document.getElementById(targetId).classList.add('active');
   });
@@ -311,12 +310,12 @@ document.querySelectorAll('.section-header button').forEach(button => {
   Resume Modal Logic
  ---------------------------------------- */
 const resumeToggle = document.querySelector('.resume-toggle');
-const resumeMenu   = document.querySelector('.resume-menu');
+const resumeMenu = document.querySelector('.resume-menu');
 const resumeOptions = document.querySelectorAll('.resume-option');
 
-const cvModal  = document.getElementById('cvModal');
-const cvFrame  = document.getElementById('cvFrame');
-const cvClose  = document.querySelector('.cv-modal__close');
+const cvModal = document.getElementById('cvModal');
+const cvFrame = document.getElementById('cvFrame');
+const cvClose = document.querySelector('.cv-modal__close');
 
 resumeOptions.forEach(option => {
   option.addEventListener('click', (e) => {
@@ -368,158 +367,259 @@ document.getElementById("contactForm").addEventListener("submit", function (e) {
 });
 
 /* -----------------------------------------
-  Google Analytics
+  GA4 Custom Tracking
  ---------------------------------------- */
+(() => {
+  if (window.__gaCustomBound) return; // prevent double-binding
+  window.__gaCustomBound = true;
 
-// TRACKING DES CLICS SUR IMAGES/VIDÉOS 
-document.querySelectorAll('.work__box .slider img, .work__box .slider video').forEach(media => {
-  media.addEventListener('click', () => {
-    // On remonte jusqu'au bloc .work__box pour récupérer le titre <h3>
-    const box         = media.closest('.work__box');
-    const projectName = box ? box.querySelector('h3').textContent.trim() : 'Inconnu';
-    // On récupère l'indice de l'image/vidéo dans le carrousel (facultatif)
-    const index = Array.from(media.parentElement.children).indexOf(media) + 1;
-    gtag('event', 'image_click', {
-      event_category: 'Galerie',
-      project_name: projectName,
-      media_index: index,
-      media_type: media.tagName.toLowerCase(), // img ou video
-      media_source: media.src
-    });
-  });
-});
+  const sendEvent = (name, params = {}) => {
+    try { gtag('event', name, params); } catch { }
+  };
 
-// TRACKING DES CLICS SUR LES LIENS "Visit Site"
-document.querySelectorAll('.work__box .work__links > a.link__text').forEach(lien => {
-  lien.addEventListener('click', () => {
-    const box         = lien.closest('.work__box');
-    const projectName = box ? box.querySelector('h3').textContent.trim() : 'Inconnu';
-    gtag('event', 'visit_project_link', {
-      event_category: 'Navigation',
-      project_name: projectName,
-      link_url: lien.href
-    });
-  });
-});
+  /* ---------- Click tracking via event delegation ---------- */
+  document.addEventListener('click', (e) => {
+    const t = e.target;
 
+    // 1) Media click in project slider (img or video)
+    const media = t.closest('.work__box .slider img, .work__box .slider video');
+    if (media) {
+      const box = media.closest('.work__box');
+      const projectName = box?.querySelector('h3')?.textContent?.trim() || 'Unknown';
+      const index = Array.from(media.parentElement.children).indexOf(media) + 1;
+      sendEvent('image_click', {
+        event_category: 'Gallery',
+        project_name: projectName,
+        media_index: index,
+        media_type: media.tagName.toLowerCase(),
+        media_source: media.src
+      });
+      return;
+    }
 
-// MESURER LE TEMPS PASSÉ PAR SECTION
-const sections = {
-  work:   { element: document.getElementById('work'),   start: null, total: 0 },
-  skills: { element: document.getElementById('skills'), start: null, total: 0 },
-  about:  { element: document.getElementById('about'),  start: null, total: 0 },
-  contact:{ element: document.getElementById('contact'),start: null, total: 0 },
-};
+    // 2) "Visit Site" link in a project
+    const visit = t.closest('.work__box .work__links > a.link__text');
+    if (visit) {
+      const box = visit.closest('.work__box');
+      const projectName = box?.querySelector('h3')?.textContent?.trim() || 'Unknown';
+      sendEvent('visit_project_link', {
+        event_category: 'Navigation',
+        project_name: projectName,
+        link_url: visit.href
+      });
+      return;
+    }
 
-// Détecter l’entrée et la sortie d’une section dans la fenêtre
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    const sectionKey = entry.target.dataset.section; 
-    const obj = sections[sectionKey];
-    if (!obj) return;
-    if (entry.isIntersecting) {
-      // L’utilisateur voit la section → démarrer le chrono
-      obj.start = performance.now();
-    } else {
-      // L’utilisateur quitte la section → ajouter la durée
-      if (obj.start !== null) {
-        obj.total += performance.now() - obj.start;
-        obj.start = null;
+    // 3) Resume menu open
+    if (t.closest('.resume-toggle')) {
+      sendEvent('resume_open', { event_category: 'CV' });
+      return;
+    }
+
+    // 4) Resume option (CV download)
+    const cv = t.closest('.resume-option');
+    if (cv) {
+      const version = (cv.dataset.file || '').includes('Short') ? 'short' : 'long';
+      sendEvent('cv_download', { event_category: 'CV', version });
+      return;
+    }
+
+    // 5) Social icons
+    const social = t.closest('.footer__social-image');
+    if (social) {
+      const alt = social.getAttribute('alt') || '';
+      if (alt === 'Github') {
+        sendEvent('social_github_click', {
+          event_category: 'Social',
+          event_label: 'GitHub',
+          platform_url: 'https://github.com/AZOGOAT'
+        });
+      } else if (alt === 'Whatsapp') {
+        sendEvent('social_whatsapp_click', {
+          event_category: 'Social',
+          event_label: 'WhatsApp'
+        });
+      } else if (alt === 'Linkedin') {
+        sendEvent('social_linkedin_click', {
+          event_category: 'Social',
+          event_label: 'LinkedIn',
+          platform_url: 'https://www.linkedin.com/in/omar-ziyad-azgaoui'
+        });
       }
     }
-  });
-}, { threshold: 0.5 }); // section considérée comme “vue” à 50 % de la hauteur
+  }, { passive: true });
 
+  /* ---------- Section engagement timing (IntersectionObserver) ---------- */
+  const sections = {
+    work: { el: document.getElementById('work'), start: 0, total: 0 },
+    skills: { el: document.getElementById('skills'), start: 0, total: 0 },
+    about: { el: document.getElementById('about'), start: 0, total: 0 },
+    contact: { el: document.getElementById('contact'), start: 0, total: 0 },
+  };
 
-Object.keys(sections).forEach(key => {
-  const el = sections[key].element;
-  if (el) {
-    el.dataset.section = key;
-    observer.observe(el);
-  }
-});
-
-// Quand la page est sur le point d’être quittée, envoyer les durées
-window.addEventListener('beforeunload', () => {
-  Object.keys(sections).forEach(key => {
-    const obj = sections[key];
-    if (obj.start !== null) {
-      // ajouts en cours si la section est encore visible
-      obj.total += performance.now() - obj.start;
-    }
-    const dureeSec = Math.round(obj.total / 1000);
-    if (dureeSec > 0) {
-      gtag('event', 'section_engagement', {
-        event_category: 'Temps par section',
-        section_name: key,
-        duration_seconds: dureeSec
-      });
-    }
-  });
-});
-
-//Suivre l’ouverture du menu “Resume” et le téléchargement des CV
-document.querySelector('.resume-toggle').addEventListener('click', () => {
-  gtag('event', 'resume_open', { event_category: 'CV' });
-});
-document.querySelectorAll('.resume-option').forEach(option => {
-  option.addEventListener('click', () => {
-    const version = option.dataset.file.includes('Short') ? 'court' : 'long';
-    gtag('event', 'cv_download', {
-      event_category: 'CV',
-      version: version
+  const io = new IntersectionObserver((entries) => {
+    const now = performance.now();
+    entries.forEach(entry => {
+      const key = entry.target.dataset.section;
+      const s = sections[key];
+      if (!s) return;
+      if (entry.isIntersecting) {
+        if (!s.start) s.start = now;
+      } else if (s.start) {
+        s.total += now - s.start;
+        s.start = 0;
+      }
     });
-  });
-});
+  }, { threshold: 0.5 });
 
-//Mesurer la profondeur de défilement (scroll depth)
-let lastScrollEvent = 0;
-window.addEventListener('scroll', () => {
-  const scrollPercent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
-  const percents = [0.25, 0.5, 0.75, 1];
-  percents.forEach(p => {
-    if (scrollPercent >= p && lastScrollEvent < p) {
-      gtag('event', 'scroll_depth', {
-        event_category: 'Engagement',
-        percent: p * 100
-      });
-      lastScrollEvent = p;
+  Object.keys(sections).forEach(k => {
+    const el = sections[k].el;
+    if (el) {
+      el.dataset.section = k;
+      io.observe(el);
     }
   });
+
+  // Flush engagement on unload
+  const flushEngagement = () => {
+    const now = performance.now();
+    Object.keys(sections).forEach(k => {
+      const s = sections[k];
+      if (!s.el) return;
+      if (s.start) { s.total += now - s.start; s.start = 0; }
+      const secs = Math.round(s.total / 1000);
+      if (secs > 0) {
+        sendEvent('section_engagement', {
+          event_category: 'Section Time',
+          section_name: k,
+          duration_seconds: secs
+        });
+        s.total = 0; // avoid double-send
+      }
+    });
+  };
+  window.addEventListener('pagehide', flushEngagement);
+  window.addEventListener('beforeunload', flushEngagement);
+
+  /* ---------- Scroll depth (25/50/75/100%) ---------- */
+  let lastDepth = 0;
+  const thresholds = [0.25, 0.5, 0.75, 1];
+  const onScroll = () => {
+    const progress = (window.scrollY + window.innerHeight) / Math.max(1, document.documentElement.scrollHeight);
+    for (const t of thresholds) {
+      if (progress >= t && lastDepth < t) {
+        sendEvent('scroll_depth', { event_category: 'Engagement', percent: t * 100 });
+        lastDepth = t;
+      }
+    }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+
+/* -----------------------------------------
+  Cookie Banner Logic (consent + scroll lock + deferred tags)
+ ---------------------------------------- */
+
+// Safe stub: queue events before real GA loads
+window.dataLayer = window.dataLayer || [];
+window.gtag = function () { window.dataLayer.push(arguments); };
+
+function loadGA() {
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-D743R8VEYS';
+  document.head.appendChild(s);
+  s.onload = () => {
+    gtag('js', new Date());
+    gtag('config', 'G-D743R8VEYS', { anonymize_ip: true });
+  };
+}
+
+function loadClarity() {
+  (function (c, l, a, r, i, t, y) {
+    c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+    t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+    y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+  })(window, document, "clarity", "script", "ss4df6cdw0");
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const cookieBanner = document.getElementById("cookie-banner");
+  const cookieAccept = document.getElementById("cookie-accept");
+  const privacyLink = document.getElementById("privacy-link");
+  const privacyModal = document.getElementById("privacy-modal");
+  const privacyClose = document.getElementById("privacy-close");
+
+  // Main nav anchors + "Get in touch" CTA
+  const navLinks = document.querySelectorAll('.nav__link, .btn.btn--pink[href="#contact"]');
+
+  // ---- Helpers -------------------------------------------------------
+
+  const setConsent = (val) => {
+    try { sessionStorage.setItem("cookieAccepted", String(!!val)); } catch { }
+  };
+
+  const hasConsent = () => sessionStorage.getItem("cookieAccepted") === "true";
+
+  const lockScroll = (lock) => {
+    document.documentElement.classList.toggle('consent-locked', lock);
+    document.body.classList.toggle('consent-locked', lock);
+  };
+
+  const showBanner = (show) => {
+    if (!cookieBanner) return;
+    if (show) {
+      requestAnimationFrame(() => cookieBanner.classList.add('show'));
+    } else {
+      cookieBanner.classList.remove('show');
+      cookieBanner.style.display = 'none';
+      cookieBanner.setAttribute('aria-hidden', 'true');
+    }
+  };
+
+  const toggleNavLinks = (enabled) => {
+    navLinks.forEach(link => {
+      link.classList.toggle('disabled-nav', !enabled);
+      link.style.pointerEvents = enabled ? 'auto' : 'none';
+      link.style.opacity = enabled ? '' : '0.5';
+      link.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+      link.setAttribute('tabindex', enabled ? '0' : '-1');
+    });
+  };
+
+  const enableTracking = () => { loadGA(); loadClarity(); };
+
+  const setUIForConsent = (consented) => {
+    lockScroll(!consented);
+    showBanner(!consented);
+    toggleNavLinks(consented);
+    if (consented) enableTracking();
+  };
+
+  // ---- Init ---------------------------------------------------------------
+
+  setUIForConsent(hasConsent());
+
+  // ---- Accept button ------------------------------------------------------
+
+  cookieAccept?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setConsent(true);
+    setUIForConsent(true); // unlocks, hides banner, enables nav, loads tags
+  });
+
+  // ---- Privacy modal ------------------------------------------------------
+
+  const showPrivacy = (show) => { if (privacyModal) privacyModal.style.display = show ? "block" : "none"; };
+
+  privacyLink?.addEventListener("click", () => showPrivacy(true));
+  privacyClose?.addEventListener("click", () => showPrivacy(false));
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && privacyModal?.style.display === "block") showPrivacy(false);
+  });
+  window.addEventListener("click", (e) => {
+    if (e.target === privacyModal) showPrivacy(false);
+  });
 });
-
-// Clic sur l’icône GitHub
-const githubIcon = document.querySelector('.footer__social-image[alt="Github"]');
-if (githubIcon) {
-  githubIcon.addEventListener('click', () => {
-    gtag('event', 'social_github_click', {
-      event_category: 'Réseaux sociaux',
-      event_label: 'GitHub',
-      platform_url: 'https://github.com/AZOGOAT'
-    });
-  });
-}
-
-// Clic sur l’icône WhatsApp
-const whatsappIcon = document.querySelector('.footer__social-image[alt="Whatsapp"]');
-if (whatsappIcon) {
-  whatsappIcon.addEventListener('click', () => {
-    gtag('event', 'social_whatsapp_click', {
-      event_category: 'Réseaux sociaux',
-      event_label: 'WhatsApp'
-      // pas de platform_url car le lien ouvre simplement le QR code
-    });
-  });
-}
-
-// Clic sur l’icône LinkedIn
-const linkedinIcon = document.querySelector('.footer__social-image[alt="Linkedin"]');
-if (linkedinIcon) {
-  linkedinIcon.addEventListener('click', () => {
-    gtag('event', 'social_linkedin_click', {
-      event_category: 'Réseaux sociaux',
-      event_label: 'LinkedIn',
-      platform_url: 'https://www.linkedin.com/in/omar-ziyad-azgaoui'
-    });
-  });
-}
