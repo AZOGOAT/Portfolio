@@ -1344,7 +1344,12 @@ body:has(.gallery-modal.active) .slider-container .next {
     border-bottom-color: var(--pink);
 }
 
-/* Learn more stacked with full-width dashed separator (clickable only on text) */
+#cookie-banner.show {
+    animation: cookieSlideIn .45s cubic-bezier(.16, .84, .44, 1),
+        cookiePulse 1.6s ease-in-out infinite;
+    transform-origin: center;
+}
+
 .learn-more-block {
     display: flex;
     flex-direction: column;
@@ -1358,7 +1363,6 @@ body:has(.gallery-modal.active) .slider-container .next {
     opacity: 0.5;
     color: rgba(255, 255, 255, 0.6);
     text-decoration: none;
-    /* keep only text clickable */
     margin-bottom: 2px;
 }
 
@@ -1383,6 +1387,20 @@ body:has(.gallery-modal.active) .slider-container .next {
         opacity: 1;
     }
 }
+
+
+@keyframes cookiePulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.04);
+    }
+}
+
 
 /* --- Privacy Modal --- */
 #privacy-modal {
