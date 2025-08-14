@@ -64,34 +64,31 @@ if (whatsappLogo && qrModal && qrClose) {
   });
 }
 
+// ----------- Initialisation des sliders avec dots + infini -----------
 document.querySelectorAll('.slider-container').forEach(container => {
   const slider = container.querySelector('.slider');
   let slides = slider.querySelectorAll('img, video');
 
-  // Clone the first and last slide for an "infinite" effect
+  // Cloner pour effet infini
   const firstClone = slides[0].cloneNode(true);
   const lastClone = slides[slides.length - 1].cloneNode(true);
   slider.appendChild(firstClone);
   slider.insertBefore(lastClone, slides[0]);
-
-  // Update the slide list after cloning
-  slides = slider.querySelectorAll('img, video'); // includes clones as well
+  slides = slider.querySelectorAll('img, video');
 
   const totalSlides = slides.length;
-  let currentIndex = 1; // start on the first real slide
-
-  // Position the slider on the first real slide
+  let currentIndex = 1;
   slider.style.transform = `translateX(-${currentIndex * 100}%)`;
 
-  // Create the dots (ignoring clones)
+  // Dots
   const dotsContainer = document.createElement('div');
   dotsContainer.classList.add('dots');
   for (let i = 0; i < totalSlides - 2; i++) {
     const dot = document.createElement('span');
     dot.classList.add('dot');
-    if (i === currentIndex - 1) dot.classList.add('active');
+    if (i === 0) dot.classList.add('active');
     dot.addEventListener('click', () => {
-      currentIndex = i + 1; // +1 because of the first clone
+      currentIndex = i + 1;
       updateCarousel();
     });
     dotsContainer.appendChild(dot);
@@ -100,18 +97,12 @@ document.querySelectorAll('.slider-container').forEach(container => {
 
   function updateDots() {
     const dots = dotsContainer.querySelectorAll('.dot');
-    dots.forEach((dot, i) => {
-      // The actual index is currentIndex - 1; handle edge clones
-      let activeIndex;
-      if (currentIndex === 0) {
-        activeIndex = totalSlides - 3;            // end clone → last real slide
-      } else if (currentIndex === totalSlides - 1) {
-        activeIndex = 0;                         // start clone → first real slide
-      } else {
-        activeIndex = currentIndex - 1;
-      }
-      dot.classList.toggle('active', i === activeIndex);
-    });
+    let activeIndex = (currentIndex === 0)
+      ? totalSlides - 3
+      : (currentIndex === totalSlides - 1)
+        ? 0
+        : currentIndex - 1;
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIndex));
   }
 
   function updateCarousel() {
@@ -120,15 +111,12 @@ document.querySelectorAll('.slider-container').forEach(container => {
     updateDots();
   }
 
-  // Reset the position after the animation when reaching a clone
   slider.addEventListener('transitionend', () => {
-    // If we went to the end clone (last slide), reposition to the first real slide
     if (currentIndex === totalSlides - 1) {
       slider.style.transition = 'none';
       currentIndex = 1;
       slider.style.transform = `translateX(-${currentIndex * 100}%)`;
     }
-    // If we went to the start clone (first slide), reposition to the last real slide
     if (currentIndex === 0) {
       slider.style.transition = 'none';
       currentIndex = totalSlides - 2;
@@ -137,7 +125,6 @@ document.querySelectorAll('.slider-container').forEach(container => {
     updateDots();
   });
 
-  // Buttons
   container.querySelector('.next').addEventListener('click', () => {
     currentIndex++;
     updateCarousel();
@@ -146,6 +133,48 @@ document.querySelectorAll('.slider-container').forEach(container => {
     currentIndex--;
     updateCarousel();
   });
+
+  // Ouverture du modal au clic sur une image/vidéo
+  slides.forEach((media, index) => {
+    media.addEventListener('click', () => openGallery(slides, index));
+  });
+
+  // ---- Swipe/touch navigation (mobile) ----
+  let startX = 0, currentX = 0, dragging = false, swiped = false;
+
+  const touchStart = (e) => {
+    const t = e.touches ? e.touches[0] : e;
+    startX = currentX = t.clientX;
+    dragging = true;
+    swiped = false;
+  };
+
+  const touchMove = (e) => {
+    if (!dragging) return;
+    const t = e.touches ? e.touches[0] : e;
+    currentX = t.clientX;
+    // Si vrai swipe horizontal, on bloque le scroll vertical
+    if (Math.abs(currentX - startX) > 10 && e.cancelable) e.preventDefault();
+  };
+
+  const touchEnd = () => {
+    if (!dragging) return;
+    const dx = currentX - startX;
+    const THRESHOLD = 40; // px
+    if (dx <= -THRESHOLD) { currentIndex++; updateCarousel(); swiped = true; }
+    else if (dx >= THRESHOLD) { currentIndex--; updateCarousel(); swiped = true; }
+    dragging = false;
+  };
+
+  container.addEventListener('touchstart', touchStart, { passive: true });
+  container.addEventListener('touchmove', touchMove, { passive: false });
+  container.addEventListener('touchend', touchEnd, { passive: true });
+
+  // Si un swipe vient d'avoir lieu, on empêche l'ouverture de la lightbox au "click"
+  container.addEventListener('click', (e) => {
+    if (swiped) { e.stopPropagation(); e.preventDefault(); swiped = false; }
+  }, true);
+
 });
 
 // Modal initialization
@@ -228,7 +257,6 @@ function openGallery(slides, clickedIndex) {
   function updateDots() {
     const dots = modalDots.querySelectorAll('.dot');
     dots.forEach((dot, i) => {
-      // Corrected active index (0..realCount-1)
       let activeIndex;
       if (currentIndex === 0) {
         activeIndex = imagesData.length - 1;
@@ -261,33 +289,44 @@ function openGallery(slides, clickedIndex) {
     updateDots();
   });
 
+  // ---- Swipe/touch pour la galerie (modal) — attacher au conteneur global ----
+  const modalContent = modal.querySelector('.gallery-content'); // capte le geste même sur <video>
+  let mStartX = 0, mCurrentX = 0, mDragging = false;
+
+  const mStart = (e) => {
+    const t = e.touches ? e.touches[0] : e;
+    mStartX = t.clientX;
+    mCurrentX = mStartX;
+    mDragging = true;
+  };
+  const mMove = (e) => {
+    if (!mDragging) return;
+    const t = e.touches ? e.touches[0] : e;
+    mCurrentX = t.clientX;
+    if (Math.abs(mCurrentX - mStartX) > 10 && e.cancelable) e.preventDefault(); // on gère le pan-x
+  };
+  const mEnd = () => {
+    if (!mDragging) return;
+    const dx = mCurrentX - mStartX;
+    const THRESHOLD = 40;
+    if (dx <= -THRESHOLD) { currentIndex++; updateModal(); }
+    else if (dx >= THRESHOLD) { currentIndex--; updateModal(); }
+    mDragging = false;
+  };
+
+  modalContent.addEventListener('touchstart', mStart, { passive: true });
+  modalContent.addEventListener('touchmove', mMove, { passive: false });
+  modalContent.addEventListener('touchend', mEnd, { passive: true });
+
   // Modal navigation
-  modalNext.onclick = () => {
-    currentIndex++;
-    updateModal();
-  };
-  modalPrev.onclick = () => {
-    currentIndex--;
-    updateModal();
-  };
-  modalClose.onclick = () => {
-    modal.classList.remove('active');
-  };
+  modalNext.onclick = () => { currentIndex++; updateModal(); };
+  modalPrev.onclick = () => { currentIndex--; updateModal(); };
+  modalClose.onclick = () => { modal.classList.remove('active'); };
 
   // Show the modal and position on the clicked image
   modal.classList.add('active');
   updateModal(false);
 }
-
-// Add the open event on each carousel image in the page
-document.querySelectorAll('.slider-container').forEach(container => {
-  const slides = container.querySelectorAll('.slider img, .slider video');
-  slides.forEach((img, index) => {
-    img.addEventListener('click', () => {
-      openGallery(slides, index);
-    });
-  });
-});
 
 /* -----------------------------------------
   Skills Tab Navigation
@@ -304,6 +343,92 @@ document.querySelectorAll('.section-header button').forEach(button => {
     document.getElementById(targetId).classList.add('active');
   });
 });
+
+/* -----------------------------------------
+  Skills Info Tooltips (click on mobile, hover on desktop)
+------------------------------------------ */
+(() => {
+  const icons = document.querySelectorAll('.skill-item .info-icon');
+
+  const getTooltip = (icon) => {
+    // Create the tooltip on the fly if needed
+    let tip = icon.querySelector('.info-tooltip');
+    if (!tip) {
+      tip = document.createElement('div');
+      tip.className = 'info-tooltip';
+      // Get the text from the existing title attribute
+      const txt = icon.getAttribute('title') || icon.getAttribute('data-info') || '';
+      tip.textContent = txt;
+      icon.appendChild(tip);
+      // Remove the native title to avoid double-tooltips
+      if (icon.hasAttribute('title')) icon.removeAttribute('title');
+      icon.setAttribute('data-info', txt);
+    }
+    return tip;
+  };
+
+  const showTip = (icon) => {
+    const tip = getTooltip(icon);
+    tip.classList.add('show');
+    icon.setAttribute('aria-expanded', 'true');
+  };
+
+  const hideTip = (icon) => {
+    const tip = icon.querySelector('.info-tooltip');
+    if (tip) tip.classList.remove('show');
+    icon.setAttribute('aria-expanded', 'false');
+  };
+
+  // Close all tooltips (useful for outside clicks, scroll, tab changes)
+  const hideAll = () => {
+    icons.forEach(hideTip);
+  };
+
+  icons.forEach((icon) => {
+    // Accessibility + state
+    icon.setAttribute('role', 'button');
+    icon.setAttribute('tabindex', '0');
+    icon.setAttribute('aria-expanded', 'false');
+    icon.setAttribute('aria-label', 'More info');
+
+    // Desktop hover
+    icon.addEventListener('mouseenter', () => showTip(icon));
+    icon.addEventListener('mouseleave', () => hideTip(icon));
+
+    // Mobile / click
+    icon.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const tip = getTooltip(icon);
+      const isOpen = tip.classList.contains('show');
+      hideAll();
+      if (!isOpen) showTip(icon);
+    });
+
+    // Keyboard
+    icon.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const tip = getTooltip(icon);
+        const isOpen = tip.classList.contains('show');
+        hideAll();
+        if (!isOpen) showTip(icon);
+      }
+      if (e.key === 'Escape') hideTip(icon);
+    });
+  });
+
+  // Click outside → close
+  document.addEventListener('click', hideAll);
+
+  // Scroll or resize → close (avoids awkward positions)
+  window.addEventListener('scroll', hideAll, { passive: true });
+  window.addEventListener('resize', hideAll);
+
+  // If you switch Skills tab, close open tooltips
+  document.querySelectorAll('.section-header button').forEach(btn => {
+    btn.addEventListener('click', hideAll);
+  });
+})();
 
 
 /* -----------------------------------------
