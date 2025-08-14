@@ -712,6 +712,7 @@ body:has(.gallery-modal.active) .slider-container .next {
     background-color: var(--skills-bg);
     padding: 6rem 0;
     color: var(--skills-text-color);
+    z-index: 0;
 }
 
 
@@ -805,6 +806,10 @@ body:has(.gallery-modal.active) .slider-container .next {
     box-shadow: 0 4px 12px rgba(255, 50, 88, 0.08);
 }
 
+.skill-item.tip-open {
+    z-index: 10000;
+}
+
 
 .skill-name {
     flex-grow: 1;
@@ -837,7 +842,7 @@ body:has(.gallery-modal.active) .slider-container .next {
     border: 1px solid rgba(215, 38, 56, 0.35);
     border-radius: 8px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
-    z-index: 20;
+    z-index: 10001;
 
     opacity: 0;
     visibility: hidden;

@@ -368,20 +368,29 @@ document.querySelectorAll('.section-header button').forEach(button => {
   };
 
   const showTip = (icon) => {
+    const card = icon.closest('.skill-item') || icon;
     const tip = getTooltip(icon);
     tip.classList.add('show');
+    card.classList.add('tip-open');
     icon.setAttribute('aria-expanded', 'true');
   };
 
   const hideTip = (icon) => {
-    const tip = icon.querySelector('.info-tooltip');
+    const card = icon.closest('.skill-item') || icon;
+    const tip = card.querySelector('.info-tooltip');
     if (tip) tip.classList.remove('show');
+    card.classList.remove('tip-open');
     icon.setAttribute('aria-expanded', 'false');
   };
 
-  // Close all tooltips (useful for outside clicks, scroll, tab changes)
   const hideAll = () => {
-    icons.forEach(hideTip);
+    icons.forEach((icon) => {
+      const card = icon.closest('.skill-item') || icon;
+      const tip = card.querySelector('.info-tooltip');
+      if (tip) tip.classList.remove('show');
+      card.classList.remove('tip-open');
+      icon.setAttribute('aria-expanded', 'false');
+    });
   };
 
   icons.forEach((icon) => {
