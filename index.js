@@ -64,32 +64,39 @@ if (whatsappLogo && qrModal && qrClose) {
   });
 }
 
-// ----------- Initialization of sliders with dots + infinite scrolling -----------
+// ----------- Sliders with dots + infinite loop -----------
 document.querySelectorAll('.slider-container').forEach(container => {
   const slider = container.querySelector('.slider');
   let slides = slider.querySelectorAll('img, video');
 
-  // Clone for infinite effect
+  // Clone edges for the infinite effect
   const firstClone = slides[0].cloneNode(true);
   const lastClone = slides[slides.length - 1].cloneNode(true);
   slider.appendChild(firstClone);
   slider.insertBefore(lastClone, slides[0]);
-  slides = slider.querySelectorAll('img, video');
+  slides = slider.querySelectorAll('img, video'); // includes clones
 
-  const totalSlides = slides.length;
-  let currentIndex = 1;
+  const totalSlides = slides.length;       // reals + 2 clones
+  let currentIndex = 1;                    // start on first real slide
+  let isAnimating = false;                 // lock while transitioning
+  let swiped = false;                      // prevent lightbox on swipe
+
+  // Initial position (no animation)
+  slider.style.transition = 'none';
   slider.style.transform = `translateX(-${currentIndex * 100}%)`;
 
-  // Dots
+  // Create dots for real slides only
   const dotsContainer = document.createElement('div');
   dotsContainer.classList.add('dots');
-  for (let i = 0; i < totalSlides - 2; i++) {
+  const realCount = totalSlides - 2;
+  for (let i = 0; i < realCount; i++) {
     const dot = document.createElement('span');
     dot.classList.add('dot');
     if (i === 0) dot.classList.add('active');
     dot.addEventListener('click', () => {
-      currentIndex = i + 1;
-      updateCarousel();
+      if (isAnimating) return;
+      currentIndex = i + 1; // map dot -> real index
+      animateToCurrent();
     });
     dotsContainer.appendChild(dot);
   }
@@ -97,87 +104,105 @@ document.querySelectorAll('.slider-container').forEach(container => {
 
   function updateDots() {
     const dots = dotsContainer.querySelectorAll('.dot');
-    let activeIndex = (currentIndex === 0)
-      ? totalSlides - 3
-      : (currentIndex === totalSlides - 1)
-        ? 0
-        : currentIndex - 1;
+    // Map currentIndex (with clones) -> active dot index
+    const activeIndex =
+      currentIndex === 0 ? realCount - 1 :
+        currentIndex === totalSlides - 1 ? 0 :
+          currentIndex - 1;
     dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIndex));
   }
 
-  function updateCarousel() {
+  function animateToCurrent() {
+    if (isAnimating) return;
+    isAnimating = true;
     slider.style.transition = 'transform 0.5s ease';
     slider.style.transform = `translateX(-${currentIndex * 100}%)`;
     updateDots();
   }
 
+  // Snap back instantly when hitting a clone, then unlock
   slider.addEventListener('transitionend', () => {
     if (currentIndex === totalSlides - 1) {
+      // at last clone -> jump to first real
       slider.style.transition = 'none';
       currentIndex = 1;
       slider.style.transform = `translateX(-${currentIndex * 100}%)`;
-    }
-    if (currentIndex === 0) {
+      void slider.offsetWidth; // force reflow
+    } else if (currentIndex === 0) {
+      // at first clone -> jump to last real
       slider.style.transition = 'none';
       currentIndex = totalSlides - 2;
       slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+      void slider.offsetWidth; // force reflow
     }
+    isAnimating = false;
     updateDots();
   });
 
-  container.querySelector('.next').addEventListener('click', () => {
-    currentIndex++;
-    updateCarousel();
+  // Arrows
+  const btnNext = container.querySelector('.next');
+  const btnPrev = container.querySelector('.prev');
+  if (btnNext) btnNext.addEventListener('click', () => {
+    if (isAnimating) return;
+    currentIndex = Math.min(currentIndex + 1, totalSlides - 1); // clamp to last clone
+    animateToCurrent();
   });
-  container.querySelector('.prev').addEventListener('click', () => {
-    currentIndex--;
-    updateCarousel();
+  if (btnPrev) btnPrev.addEventListener('click', () => {
+    if (isAnimating) return;
+    currentIndex = Math.max(currentIndex - 1, 0); // clamp to first clone
+    animateToCurrent();
   });
 
-  // Open the modal when clicking on an image/video
+  // Open modal on media click (prevent if it was a swipe)
   slides.forEach((media, index) => {
-    media.addEventListener('click', () => openGallery(slides, index));
+    media.addEventListener('click', (e) => {
+      if (swiped) {
+        e.stopPropagation();
+        e.preventDefault();
+        swiped = false;
+        return;
+      }
+      openGallery(slides, index);
+    });
   });
 
-  // ---- Swipe/touch navigation (mobile) ----
-  let startX = 0, currentX = 0, dragging = false, swiped = false;
+  // Touch/swipe (horizontal)
+  let startX = 0, currentX = 0, dragging = false;
+  const THRESHOLD = 40;
 
-  const touchStart = (e) => {
+  const onStart = (e) => {
+    if (isAnimating) return;
     const t = e.touches ? e.touches[0] : e;
     startX = currentX = t.clientX;
     dragging = true;
     swiped = false;
   };
-
-  const touchMove = (e) => {
+  const onMove = (e) => {
     if (!dragging) return;
     const t = e.touches ? e.touches[0] : e;
     currentX = t.clientX;
-    // If true horizontal swipe, block vertical scrolling
+    // block vertical scroll when clearly swiping horizontally
     if (Math.abs(currentX - startX) > 10 && e.cancelable) e.preventDefault();
   };
-
-  const touchEnd = () => {
-    if (!dragging) return;
+  const onEnd = () => {
+    if (!dragging || isAnimating) { dragging = false; return; }
     const dx = currentX - startX;
-    const THRESHOLD = 40; // px
-    if (dx <= -THRESHOLD) { currentIndex++; updateCarousel(); swiped = true; }
-    else if (dx >= THRESHOLD) { currentIndex--; updateCarousel(); swiped = true; }
+    if (dx <= -THRESHOLD) { currentIndex = Math.min(currentIndex + 1, totalSlides - 1); animateToCurrent(); swiped = true; }
+    else if (dx >= THRESHOLD) { currentIndex = Math.max(currentIndex - 1, 0); animateToCurrent(); swiped = true; }
     dragging = false;
   };
 
-  container.addEventListener('touchstart', touchStart, { passive: true });
-  container.addEventListener('touchmove', touchMove, { passive: false });
-  container.addEventListener('touchend', touchEnd, { passive: true });
+  container.addEventListener('touchstart', onStart, { passive: true });
+  container.addEventListener('touchmove', onMove, { passive: false });
+  container.addEventListener('touchend', onEnd, { passive: true });
 
-  // If a swipe just occurred, prevent the lightbox from opening on "click"
+  // Safety: if a swipe just occurred, neutralize container click bubbling once
   container.addEventListener('click', (e) => {
     if (swiped) { e.stopPropagation(); e.preventDefault(); swiped = false; }
   }, true);
-
 });
 
-// Modal initialization
+// ----------- Modal (lightbox) -----------
 const modal = document.getElementById('galleryModal');
 const modalSlider = modal.querySelector('.slider');
 const modalDots = modal.querySelector('.dots');
@@ -186,147 +211,144 @@ const modalNext = modal.querySelector('.next');
 const modalClose = modal.querySelector('.close-button');
 
 function openGallery(slides, clickedIndex) {
-  // "slides" is a NodeList of the clicked carousel’s images (with clones)
-  // "clickedIndex" is the index in that NodeList of the clicked image
-
-  // Prepare real data ignoring clones
-  const realCount = slides.length - 2; // 2 clones
+  // Build real slides data (ignore outer clones)
+  const realCount = slides.length - 2;
   const imagesData = [];
   for (let i = 1; i <= realCount; i++) {
     const el = slides[i];
     imagesData.push({
       src: el.src,
       alt: el.alt || "",
-      type: el.tagName.toLowerCase()  // 'img' or 'video'
+      type: el.tagName.toLowerCase()
     });
   }
 
-  // Determine the real index from the clicked index
+  // Map clicked index (with clones) -> real start index
   let startIndex;
-  if (clickedIndex === 0) {
-    startIndex = realCount - 1;
-  } else if (clickedIndex === slides.length - 1) {
-    startIndex = 0;
-  } else {
-    startIndex = clickedIndex - 1;
-  }
+  if (clickedIndex === 0) startIndex = realCount - 1;
+  else if (clickedIndex === slides.length - 1) startIndex = 0;
+  else startIndex = clickedIndex - 1;
 
-  // Clear previous content
+  // Reset modal content
   modalSlider.innerHTML = '';
   modalDots.innerHTML = '';
 
-  // Build slides with clones (last, reals, first) for the modal
+  // Build modal slides with clones: [last, ...reals, first]
   const slidesData = [
-    imagesData[imagesData.length - 1],  // last clone
+    imagesData[imagesData.length - 1],
     ...imagesData,
-    imagesData[0]                       // first clone
+    imagesData[0]
   ];
   slidesData.forEach(data => {
-    let element;
+    let el;
     if (data.type === 'video') {
-      element = document.createElement('video');
-      element.src = data.src;
-      element.controls = true;
-      element.muted = true;
-      element.playsInline = true;
-      element.setAttribute('class', 'work__image');
+      el = document.createElement('video');
+      el.src = data.src;
+      el.controls = true;
+      el.muted = true;
+      el.playsInline = true;
+      el.className = 'work__image';
     } else {
-      element = document.createElement('img');
-      element.src = data.src;
-      element.alt = data.alt;
-      element.setAttribute('class', 'work__image');
+      el = document.createElement('img');
+      el.src = data.src;
+      el.alt = data.alt;
+      el.className = 'work__image';
     }
-    modalSlider.appendChild(element);
+    modalSlider.appendChild(el);
   });
 
-  // Create the indicator dots
+  // Create dots
   imagesData.forEach((_, i) => {
     const dot = document.createElement('span');
     dot.classList.add('dot');
     if (i === startIndex) dot.classList.add('active');
     dot.addEventListener('click', () => {
+      if (isAnimating) return;
       currentIndex = i + 1;
-      updateModal();
+      animateModal(true);
     });
     modalDots.appendChild(dot);
   });
 
-  // Current index (includes clones)
-  let currentIndex = startIndex + 1;
+  // Modal state
+  let currentIndex = startIndex + 1; // includes clones
+  let isAnimating = false;
 
-  function updateDots() {
+  function updateModalDots() {
     const dots = modalDots.querySelectorAll('.dot');
-    dots.forEach((dot, i) => {
-      let activeIndex;
-      if (currentIndex === 0) {
-        activeIndex = imagesData.length - 1;
-      } else if (currentIndex === slidesData.length - 1) {
-        activeIndex = 0;
-      } else {
-        activeIndex = currentIndex - 1;
-      }
-      dot.classList.toggle('active', i === activeIndex);
-    });
+    const activeIndex =
+      currentIndex === 0 ? imagesData.length - 1 :
+        currentIndex === slidesData.length - 1 ? 0 :
+          currentIndex - 1;
+    dots.forEach((d, i) => d.classList.toggle('active', i === activeIndex));
   }
 
-  function updateModal(animate = true) {
+  function animateModal(animate = true) {
+    if (isAnimating) return;
+    if (animate) isAnimating = true;
     modalSlider.style.transition = animate ? 'transform 0.5s ease' : 'none';
     modalSlider.style.transform = `translateX(-${currentIndex * 100}%)`;
-    updateDots();
+    updateModalDots();
   }
 
-  // Infinite loop: reposition on real images after the transition
-  modalSlider.addEventListener('transitionend', () => {
+  // Infinite correction after transition
+  const onModalTransitionEnd = () => {
     if (currentIndex === 0) {
       modalSlider.style.transition = 'none';
       currentIndex = imagesData.length;
       modalSlider.style.transform = `translateX(-${currentIndex * 100}%)`;
+      void modalSlider.offsetWidth; // reflow
     } else if (currentIndex === slidesData.length - 1) {
       modalSlider.style.transition = 'none';
       currentIndex = 1;
       modalSlider.style.transform = `translateX(-${currentIndex * 100}%)`;
+      void modalSlider.offsetWidth; // reflow
     }
-    updateDots();
-  });
+    isAnimating = false;
+    updateModalDots();
+  };
 
-  // ---- Swipe/touch pour la galerie (modal) — attacher au conteneur global ----
-  const modalContent = modal.querySelector('.gallery-content'); // capte le geste même sur <video>
+  // Bind once per open (content is recreated each time)
+  modalSlider.addEventListener('transitionend', onModalTransitionEnd, { once: false });
+
+  // Nav buttons
+  modalNext.onclick = () => { if (!isAnimating) { currentIndex++; animateModal(true); } };
+  modalPrev.onclick = () => { if (!isAnimating) { currentIndex--; animateModal(true); } };
+  modalClose.onclick = () => {
+    modal.classList.remove('active');
+  };
+
+  // Touch on the whole modal content (works over videos too)
+  const modalContent = modal.querySelector('.gallery-content');
   let mStartX = 0, mCurrentX = 0, mDragging = false;
-
-  const mStart = (e) => {
+  const onMStart = (e) => {
+    if (isAnimating) return;
     const t = e.touches ? e.touches[0] : e;
-    mStartX = t.clientX;
-    mCurrentX = mStartX;
+    mStartX = mCurrentX = t.clientX;
     mDragging = true;
   };
-  const mMove = (e) => {
+  const onMMove = (e) => {
     if (!mDragging) return;
     const t = e.touches ? e.touches[0] : e;
     mCurrentX = t.clientX;
-    if (Math.abs(mCurrentX - mStartX) > 10 && e.cancelable) e.preventDefault(); // on gère le pan-x
+    if (Math.abs(mCurrentX - mStartX) > 10 && e.cancelable) e.preventDefault();
   };
-  const mEnd = () => {
-    if (!mDragging) return;
+  const onMEnd = () => {
+    if (!mDragging || isAnimating) { mDragging = false; return; }
     const dx = mCurrentX - mStartX;
-    const THRESHOLD = 40;
-    if (dx <= -THRESHOLD) { currentIndex++; updateModal(); }
-    else if (dx >= THRESHOLD) { currentIndex--; updateModal(); }
+    if (dx <= -40) { currentIndex++; animateModal(true); }
+    else if (dx >= 40) { currentIndex--; animateModal(true); }
     mDragging = false;
   };
+  modalContent.addEventListener('touchstart', onMStart, { passive: true });
+  modalContent.addEventListener('touchmove', onMMove, { passive: false });
+  modalContent.addEventListener('touchend', onMEnd, { passive: true });
 
-  modalContent.addEventListener('touchstart', mStart, { passive: true });
-  modalContent.addEventListener('touchmove', mMove, { passive: false });
-  modalContent.addEventListener('touchend', mEnd, { passive: true });
-
-  // Modal navigation
-  modalNext.onclick = () => { currentIndex++; updateModal(); };
-  modalPrev.onclick = () => { currentIndex--; updateModal(); };
-  modalClose.onclick = () => { modal.classList.remove('active'); };
-
-  // Show the modal and position on the clicked image
+  // Show modal and jump without animation to the clicked slide
   modal.classList.add('active');
-  updateModal(false);
+  animateModal(false);
 }
+
 
 /* -----------------------------------------
   Skills Tab Navigation
