@@ -64,12 +64,12 @@ if (whatsappLogo && qrModal && qrClose) {
   });
 }
 
-// ----------- Initialisation des sliders avec dots + infini -----------
+// ----------- Initialization of sliders with dots + infinite scrolling -----------
 document.querySelectorAll('.slider-container').forEach(container => {
   const slider = container.querySelector('.slider');
   let slides = slider.querySelectorAll('img, video');
 
-  // Cloner pour effet infini
+  // Clone for infinite effect
   const firstClone = slides[0].cloneNode(true);
   const lastClone = slides[slides.length - 1].cloneNode(true);
   slider.appendChild(firstClone);
@@ -134,7 +134,7 @@ document.querySelectorAll('.slider-container').forEach(container => {
     updateCarousel();
   });
 
-  // Ouverture du modal au clic sur une image/vidéo
+  // Open the modal when clicking on an image/video
   slides.forEach((media, index) => {
     media.addEventListener('click', () => openGallery(slides, index));
   });
@@ -153,7 +153,7 @@ document.querySelectorAll('.slider-container').forEach(container => {
     if (!dragging) return;
     const t = e.touches ? e.touches[0] : e;
     currentX = t.clientX;
-    // Si vrai swipe horizontal, on bloque le scroll vertical
+    // If true horizontal swipe, block vertical scrolling
     if (Math.abs(currentX - startX) > 10 && e.cancelable) e.preventDefault();
   };
 
@@ -170,7 +170,7 @@ document.querySelectorAll('.slider-container').forEach(container => {
   container.addEventListener('touchmove', touchMove, { passive: false });
   container.addEventListener('touchend', touchEnd, { passive: true });
 
-  // Si un swipe vient d'avoir lieu, on empêche l'ouverture de la lightbox au "click"
+  // If a swipe just occurred, prevent the lightbox from opening on "click"
   container.addEventListener('click', (e) => {
     if (swiped) { e.stopPropagation(); e.preventDefault(); swiped = false; }
   }, true);
@@ -497,6 +497,114 @@ document.getElementById("contactForm").addEventListener("submit", function (e) {
 });
 
 /* -----------------------------------------
+  Cookie Banner Logic (consent + scroll lock + deferred tags)
+ ---------------------------------------- */
+
+// Safe stub: queue events before real GA loads
+window.dataLayer = window.dataLayer || [];
+window.gtag = function () { window.dataLayer.push(arguments); };
+
+function loadGA() {
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-D743R8VEYS';
+  document.head.appendChild(s);
+  s.onload = () => {
+    gtag('js', new Date());
+    gtag('config', 'G-D743R8VEYS', { anonymize_ip: true });
+  };
+}
+
+function loadClarity() {
+  (function (c, l, a, r, i, t, y) {
+    c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+    t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+    y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+  })(window, document, "clarity", "script", "ss4df6cdw0");
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const cookieBanner = document.getElementById("cookie-banner");
+  const cookieAccept = document.getElementById("cookie-accept");
+  const privacyLink = document.getElementById("privacy-link");
+  const privacyModal = document.getElementById("privacy-modal");
+  const privacyClose = document.getElementById("privacy-close");
+
+  // Main nav anchors + "Get in touch" CTA
+  const navLinks = document.querySelectorAll('.nav__link, .btn.btn--pink[href="#contact"]');
+
+  // ---- Helpers -------------------------------------------------------
+
+  const setConsent = (val) => {
+    try { sessionStorage.setItem("cookieAccepted", String(!!val)); } catch { }
+  };
+
+  const hasConsent = () => sessionStorage.getItem("cookieAccepted") === "true";
+
+  const lockScroll = (lock) => {
+    document.documentElement.classList.toggle('consent-locked', lock);
+    document.body.classList.toggle('consent-locked', lock);
+  };
+
+  const showBanner = (show) => {
+    if (!cookieBanner) return;
+    if (show) {
+      requestAnimationFrame(() => cookieBanner.classList.add('show'));
+    } else {
+      cookieBanner.classList.remove('show');
+      cookieBanner.style.display = 'none';
+      cookieBanner.setAttribute('aria-hidden', 'true');
+    }
+  };
+
+  const toggleNavLinks = (enabled) => {
+    navLinks.forEach(link => {
+      link.classList.toggle('disabled-nav', !enabled);
+      link.style.pointerEvents = enabled ? 'auto' : 'none';
+      link.style.opacity = enabled ? '' : '0.5';
+      link.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+      link.setAttribute('tabindex', enabled ? '0' : '-1');
+    });
+  };
+
+  const enableTracking = () => { loadGA(); loadClarity(); };
+
+  const setUIForConsent = (consented) => {
+    lockScroll(!consented);
+    showBanner(!consented);
+    toggleNavLinks(consented);
+    if (consented) enableTracking();
+  };
+
+  // ---- Init ---------------------------------------------------------------
+
+  setUIForConsent(hasConsent());
+
+  // ---- Accept button ------------------------------------------------------
+
+  cookieAccept?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setConsent(true);
+    setUIForConsent(true); // unlocks, hides banner, enables nav, loads tags
+  });
+
+  // ---- Privacy modal ------------------------------------------------------
+
+  const showPrivacy = (show) => { if (privacyModal) privacyModal.style.display = show ? "block" : "none"; };
+
+  privacyLink?.addEventListener("click", () => showPrivacy(true));
+  privacyClose?.addEventListener("click", () => showPrivacy(false));
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && privacyModal?.style.display === "block") showPrivacy(false);
+  });
+  window.addEventListener("click", (e) => {
+    if (e.target === privacyModal) showPrivacy(false);
+  });
+});
+
+/* -----------------------------------------
   GA4 Custom Tracking
  ---------------------------------------- */
 (() => {
@@ -645,111 +753,3 @@ document.getElementById("contactForm").addEventListener("submit", function (e) {
   };
   window.addEventListener('scroll', onScroll, { passive: true });
 })();
-
-/* -----------------------------------------
-  Cookie Banner Logic (consent + scroll lock + deferred tags)
- ---------------------------------------- */
-
-// Safe stub: queue events before real GA loads
-window.dataLayer = window.dataLayer || [];
-window.gtag = function () { window.dataLayer.push(arguments); };
-
-function loadGA() {
-  const s = document.createElement('script');
-  s.async = true;
-  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-D743R8VEYS';
-  document.head.appendChild(s);
-  s.onload = () => {
-    gtag('js', new Date());
-    gtag('config', 'G-D743R8VEYS', { anonymize_ip: true });
-  };
-}
-
-function loadClarity() {
-  (function (c, l, a, r, i, t, y) {
-    c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
-    t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
-    y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-  })(window, document, "clarity", "script", "ss4df6cdw0");
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const cookieBanner = document.getElementById("cookie-banner");
-  const cookieAccept = document.getElementById("cookie-accept");
-  const privacyLink = document.getElementById("privacy-link");
-  const privacyModal = document.getElementById("privacy-modal");
-  const privacyClose = document.getElementById("privacy-close");
-
-  // Main nav anchors + "Get in touch" CTA
-  const navLinks = document.querySelectorAll('.nav__link, .btn.btn--pink[href="#contact"]');
-
-  // ---- Helpers -------------------------------------------------------
-
-  const setConsent = (val) => {
-    try { sessionStorage.setItem("cookieAccepted", String(!!val)); } catch { }
-  };
-
-  const hasConsent = () => sessionStorage.getItem("cookieAccepted") === "true";
-
-  const lockScroll = (lock) => {
-    document.documentElement.classList.toggle('consent-locked', lock);
-    document.body.classList.toggle('consent-locked', lock);
-  };
-
-  const showBanner = (show) => {
-    if (!cookieBanner) return;
-    if (show) {
-      requestAnimationFrame(() => cookieBanner.classList.add('show'));
-    } else {
-      cookieBanner.classList.remove('show');
-      cookieBanner.style.display = 'none';
-      cookieBanner.setAttribute('aria-hidden', 'true');
-    }
-  };
-
-  const toggleNavLinks = (enabled) => {
-    navLinks.forEach(link => {
-      link.classList.toggle('disabled-nav', !enabled);
-      link.style.pointerEvents = enabled ? 'auto' : 'none';
-      link.style.opacity = enabled ? '' : '0.5';
-      link.setAttribute('aria-disabled', enabled ? 'false' : 'true');
-      link.setAttribute('tabindex', enabled ? '0' : '-1');
-    });
-  };
-
-  const enableTracking = () => { loadGA(); loadClarity(); };
-
-  const setUIForConsent = (consented) => {
-    lockScroll(!consented);
-    showBanner(!consented);
-    toggleNavLinks(consented);
-    if (consented) enableTracking();
-  };
-
-  // ---- Init ---------------------------------------------------------------
-
-  setUIForConsent(hasConsent());
-
-  // ---- Accept button ------------------------------------------------------
-
-  cookieAccept?.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setConsent(true);
-    setUIForConsent(true); // unlocks, hides banner, enables nav, loads tags
-  });
-
-  // ---- Privacy modal ------------------------------------------------------
-
-  const showPrivacy = (show) => { if (privacyModal) privacyModal.style.display = show ? "block" : "none"; };
-
-  privacyLink?.addEventListener("click", () => showPrivacy(true));
-  privacyClose?.addEventListener("click", () => showPrivacy(false));
-
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && privacyModal?.style.display === "block") showPrivacy(false);
-  });
-  window.addEventListener("click", (e) => {
-    if (e.target === privacyModal) showPrivacy(false);
-  });
-});
