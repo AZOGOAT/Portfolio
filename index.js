@@ -336,8 +336,10 @@ document.querySelectorAll('.section-header button').forEach(button => {
     // Deactivate all tabs and sections
     document.querySelectorAll('.section-header button').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.section-content').forEach(content => content.classList.remove('active'));
+
     // Activate the clicked tab
     this.classList.add('active');
+
     // Show the corresponding section
     const targetId = this.getAttribute('data-target');
     document.getElementById(targetId).classList.add('active');
@@ -345,98 +347,92 @@ document.querySelectorAll('.section-header button').forEach(button => {
 });
 
 /* -----------------------------------------
-  Skills Info Tooltips (click on mobile, hover on desktop)
+  Skills Info Tooltips (click on all devices)
 ------------------------------------------ */
-(() => {
-  const icons = document.querySelectorAll('.skill-item .info-icon');
 
-  const getTooltip = (icon) => {
-    // Create the tooltip on the fly if needed
-    let tip = icon.querySelector('.info-tooltip');
+(() => {
+  const skillsSection = document.getElementById("skills");
+
+  // Remove native titles + add a11y attributes
+  document.querySelectorAll(".skill-item .info-icon").forEach(icon => {
+    if (icon.hasAttribute("title")) icon.removeAttribute("title");
+    if (!icon.hasAttribute("tabindex")) icon.setAttribute("tabindex", "0");
+    icon.setAttribute("role", "button");
+    icon.setAttribute("aria-expanded", "false");
+  });
+
+  const getOrCreateTip = (icon) => {
+    let tip = icon.querySelector(".info-tooltip");
     if (!tip) {
-      tip = document.createElement('div');
-      tip.className = 'info-tooltip';
-      // Get the text from the existing title attribute
-      const txt = icon.getAttribute('title') || icon.getAttribute('data-info') || '';
-      tip.textContent = txt;
+      tip = document.createElement("div");
+      tip.className = "info-tooltip";
+      tip.textContent = icon.getAttribute("data-tip") || icon.getAttribute("aria-label") || "More info";
       icon.appendChild(tip);
-      // Remove the native title to avoid double-tooltips
-      if (icon.hasAttribute('title')) icon.removeAttribute('title');
-      icon.setAttribute('data-info', txt);
     }
     return tip;
   };
 
-  const showTip = (icon) => {
-    const card = icon.closest('.skill-item') || icon;
-    const tip = getTooltip(icon);
-    tip.classList.add('show');
-    card.classList.add('tip-open');
-    icon.setAttribute('aria-expanded', 'true');
-  };
-
-  const hideTip = (icon) => {
-    const card = icon.closest('.skill-item') || icon;
-    const tip = card.querySelector('.info-tooltip');
-    if (tip) tip.classList.remove('show');
-    card.classList.remove('tip-open');
-    icon.setAttribute('aria-expanded', 'false');
-  };
-
-  const hideAll = () => {
-    icons.forEach((icon) => {
-      const card = icon.closest('.skill-item') || icon;
-      const tip = card.querySelector('.info-tooltip');
-      if (tip) tip.classList.remove('show');
-      card.classList.remove('tip-open');
-      icon.setAttribute('aria-expanded', 'false');
+  const closeAll = () => {
+    document.querySelectorAll(".info-tooltip.show").forEach(t => {
+      t.classList.remove("show");
+      t.parentElement?.setAttribute("aria-expanded", "false");
+      t.closest(".skill-item")?.classList.remove("tip-open");
     });
   };
 
-  icons.forEach((icon) => {
-    // Accessibility + state
-    icon.setAttribute('role', 'button');
-    icon.setAttribute('tabindex', '0');
-    icon.setAttribute('aria-expanded', 'false');
-    icon.setAttribute('aria-label', 'More info');
+  const openFor = (icon) => {
+    const tip = getOrCreateTip(icon);
+    closeAll();
+    tip.classList.add("show");
+    icon.setAttribute("aria-expanded", "true");
+    icon.closest(".skill-item")?.classList.add("tip-open");
+  };
 
-    // Desktop hover
-    icon.addEventListener('mouseenter', () => showTip(icon));
-    icon.addEventListener('mouseleave', () => hideTip(icon));
+  const toggleFor = (icon) => {
+    const tip = icon.querySelector(".info-tooltip");
+    const isOpen = tip && tip.classList.contains("show");
+    if (isOpen) {
+      closeAll();
+    } else {
+      openFor(icon);
+    }
+  };
 
-    // Mobile / click
-    icon.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const tip = getTooltip(icon);
-      const isOpen = tip.classList.contains('show');
-      hideAll();
-      if (!isOpen) showTip(icon);
-    });
+  // Delegated click
+  skillsSection.addEventListener("click", (e) => {
+    const icon = e.target.closest(".info-icon");
+    const insideTooltip = e.target.closest(".info-tooltip");
 
-    // Keyboard
-    icon.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        const tip = getTooltip(icon);
-        const isOpen = tip.classList.contains('show');
-        hideAll();
-        if (!isOpen) showTip(icon);
-      }
-      if (e.key === 'Escape') hideTip(icon);
-    });
+    if (insideTooltip) return; // allow text selection
+    if (icon) {
+      toggleFor(icon);
+    } else {
+      closeAll();
+    }
   });
 
-  // Click outside → close
-  document.addEventListener('click', hideAll);
-
-  // Scroll or resize → close (avoids awkward positions)
-  window.addEventListener('scroll', hideAll, { passive: true });
-  window.addEventListener('resize', hideAll);
-
-  // If you switch Skills tab, close open tooltips
-  document.querySelectorAll('.section-header button').forEach(btn => {
-    btn.addEventListener('click', hideAll);
+  // Keyboard support
+  skillsSection.addEventListener("keydown", (e) => {
+    const icon = e.target.closest(".info-icon");
+    if (!icon) {
+      if (e.key === "Escape") closeAll();
+      return;
+    }
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggleFor(icon);
+    }
+    if (e.key === "Escape") closeAll();
   });
+
+  // Close on outside clicks
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#skills")) closeAll();
+  });
+
+  // Close on resize/scroll
+  window.addEventListener("resize", closeAll);
+  window.addEventListener("scroll", closeAll, { passive: true });
 })();
 
 

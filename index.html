@@ -84,7 +84,7 @@
           <div class="work__box">
             <div class="work__text">
               <h3>ReCHor</h3>
-              <p>
+              <p style="text-align: justify;">
                 A route-finding system for the Swiss public transport network, built with a custom Connection Scan
                 Algorithm (CSA) and multi-criteria optimization. Features a JavaFX interface, GeoJSON export, and
                 iCalendar integration.
@@ -119,7 +119,7 @@
           <div class="work__box">
             <div class="work__text">
               <h3>ICMonGame</h3>
-              <p>
+              <p style="text-align: justify;">
                 A turn-based mini-RPG inspired by Pokémon, with collectible creatures, dynamic attack behaviors, and an
                 interactive GUI. Built with modular object-oriented design and event-driven gameplay.
               </p>
@@ -154,7 +154,7 @@
           <div class="work__box">
             <div class="work__text">
               <h3>Portfolio</h3>
-              <p>
+              <p style="text-align: justify;">
                 A fully responsive portfolio site showcasing projects, skills, and experience. Includes custom sliders,
                 lightbox galleries, analytics tracking, and a clean, accessible design for all devices.
               </p>
@@ -181,7 +181,7 @@
           <div class="work__box">
             <div class="work__text">
               <h3>Hangman</h3>
-              <p>
+              <p style="text-align: justify;">
                 A graphical Hangman game with difficulty levels, scoring, and real-time visual updates using the Turtle
                 graphics module. Includes interactive word guessing and animated feedback.
               </p>
@@ -222,7 +222,7 @@
         <h2>Skills</h2>
 
         <div class="section-container">
-          <!-- Onglets dans wrapper centré -->
+          <!-- Tabs in centered wrapper -->
           <div class="section-header-wrapper">
             <div class="section-header">
               <button data-target="programming" class="active">Programming Languages</button>
@@ -232,198 +232,242 @@
             </div>
           </div>
 
-          <!-- Contenu du premier onglet (langages de programmation) -->
+          <!-- Content of the first tab (Programming Languages) -->
           <div id="programming" class="section-content active">
             <div class="category">
               <div class="category-title">Programming Languages</div>
 
               <div class="skill-item">
-                <img src="./images/logos/java.png" class="skills__logo" alt="Java" title="Java">
+                <img src="./images/logos/java.png" class="skills__logo" alt="Java">
                 <span class="skill-name">Java</span>
                 <span class="info-icon"
-                  title="Java is widely used in enterprise applications and Android development.">ℹ️</span>
+                  data-tip="Java is widely used in enterprise applications and Android development."
+                  aria-label="More information about Java">ℹ️</span>
               </div>
+
               <div class="skill-item">
-                <img src="./images/logos/python.png" class="skills__logo" alt="Python" title="Python">
+                <img src="./images/logos/python.png" class="skills__logo" alt="Python">
                 <span class="skill-name">Python</span>
-                <span class="info-icon" title="Python is known for its simple syntax and rich ecosystem.">ℹ️</span>
+                <span class="info-icon" data-tip="Python is known for its simple syntax and rich ecosystem."
+                  aria-label="More information about Python">ℹ️</span>
               </div>
+
               <div class="skill-item">
-                <img src="./images/logos/html.png" class="skills__logo" alt="HTML" title="HTML5">
+                <img src="./images/logos/html.png" class="skills__logo" alt="HTML">
                 <span class="skill-name">HTML</span>
-                <span class="info-icon" title="HTML structures the content of web pages.">ℹ️</span>
+                <span class="info-icon" data-tip="HTML structures the content of web pages."
+                  aria-label="More information about HTML">ℹ️</span>
               </div>
+
               <div class="skill-item">
-                <img src="./images/logos/css.png" class="skills__logo" alt="CSS" title="CSS3">
+                <img src="./images/logos/css.png" class="skills__logo" alt="CSS">
                 <span class="skill-name">CSS</span>
-                <span class="info-icon" title="CSS styles and layouts web pages.">ℹ️</span>
+                <span class="info-icon" data-tip="CSS styles and layouts web pages."
+                  aria-label="More information about CSS">ℹ️</span>
               </div>
+
               <div class="skill-item">
-                <img src="./images/logos/javascript.png" class="skills__logo" alt="JavaScript" title="JavaScript">
+                <img src="./images/logos/javascript.png" class="skills__logo" alt="JavaScript">
                 <span class="skill-name">JavaScript</span>
-                <span class="info-icon" title="JavaScript powers interactivity on the web.">ℹ️</span>
+                <span class="info-icon" data-tip="JavaScript powers interactivity on the web."
+                  aria-label="More information about JavaScript">ℹ️</span>
               </div>
+
               <div class="skill-item">
-                <img src="./images/logos/verilog.png" class="skills__logo" alt="Verilog" title="Verilog HDL">
+                <img src="./images/logos/verilog.png" class="skills__logo" alt="Verilog">
                 <span class="skill-name">Verilog</span>
-                <span class="info-icon"
-                  title="Verilog is a hardware description language for digital circuits.">ℹ️</span>
+                <span class="info-icon" data-tip="Verilog is a hardware description language for digital circuits."
+                  aria-label="More information about Verilog">ℹ️</span>
               </div>
+
             </div>
           </div>
 
-          <!-- Contenu du deuxième onglet (outils et technologies) -->
+          <!-- Content of the second tab (Tools & Technologies) -->
           <div id="tools" class="section-content">
             <div class="category">
               <div class="category-title">Tools & Technologies</div>
 
               <div class="skill-item">
-                <img src="./images/svg/github.svg" class="skills__logo" title="GitHub" alt="Git">
+                <img src="./images/svg/github.svg" class="skills__logo" alt="GitHub">
                 <span class="skill-name">GitHub</span>
-                <span class="info-icon" title="I use GitHub to manage, share, and collaborate on my projects.">ℹ️</span>
-              </div>
-              <div class="skill-item">
-                <img src="./images/svg/intellij.svg" class="skills__logo" title="IntelliJ IDEA" alt="IntelliJ">
-                <span class="skill-name">IntelliJ IDEA</span>
-                <span class="info-icon"
-                  title="My main IDE for Java development, especially during academic and personal projects.">ℹ️</span>
+                <span class="info-icon" data-tip="I use GitHub to manage, share, and collaborate on my projects."
+                  aria-label="More information about GitHub">ℹ️</span>
               </div>
 
               <div class="skill-item">
-                <img src="./images/svg/vs code.svg" class="skills__logo" title="VS Code" alt="VS Code">
+                <img src="./images/svg/intellij.svg" class="skills__logo" alt="IntelliJ IDEA">
+                <span class="skill-name">IntelliJ IDEA</span>
+                <span class="info-icon"
+                  data-tip="My main IDE for Java development, especially during academic and personal projects."
+                  aria-label="More information about IntelliJ IDEA">ℹ️</span>
+              </div>
+
+              <div class="skill-item">
+                <img src="./images/svg/vs code.svg" class="skills__logo" alt="VS Code">
                 <span class="skill-name">VS Code</span>
                 <span class="info-icon"
-                  title="My go-to editor for web development, Python scripting, and quick prototyping.">ℹ️</span>
+                  data-tip="My go-to editor for web development, Python scripting, and quick prototyping."
+                  aria-label="More information about VS Code">ℹ️</span>
               </div>
+
               <div class="skill-item">
-                <img src="./images/svg/latex.svg" class="skills__logo" title="LaTeX" alt="LaTeX">
-                <span class="skill-name">LaTex Editor</span>
+                <img src="./images/svg/latex.svg" class="skills__logo" alt="LaTeX">
+                <span class="skill-name">LaTeX Editor</span>
                 <span class="info-icon"
-                  title="I use LaTeX for writing clean, structured reports, especially in scientific and technical contexts.">ℹ️</span>
+                  data-tip="I use LaTeX for writing clean, structured reports, especially in scientific and technical contexts."
+                  aria-label="More information about LaTeX">ℹ️</span>
               </div>
+
               <div class="skill-item">
-                <img src="./images/svg/google-analytics.svg" class="skills__logo" title="Google Analytics"
-                  alt="Google Analytics">
+                <img src="./images/svg/google-analytics.svg" class="skills__logo" alt="Google Analytics">
                 <span class="skill-name">Google Analytics</span>
                 <span class="info-icon"
-                  title="I use Google Analytics to track and analyze website traffic, user behavior, and performance metrics.">ℹ️</span>
+                  data-tip="I use Google Analytics to track and analyze website traffic, user behavior, and performance metrics."
+                  aria-label="More information about Google Analytics">ℹ️</span>
               </div>
+
               <div class="skill-item">
-                <img src="./images/logos/microsoft-clarity.png" class="skills__logo" title="Microsoft Clarity"
-                  alt="Microsoft Clarity">
+                <img src="./images/logos/microsoft-clarity.png" class="skills__logo" alt="Microsoft Clarity">
                 <span class="skill-name">Microsoft Clarity</span>
                 <span class="info-icon"
-                  title="I use Microsoft Clarity to monitor user interactions through heatmaps, session recordings, and behavior insights.">ℹ️</span>
+                  data-tip="I use Microsoft Clarity to monitor user interactions through heatmaps, session recordings, and behavior insights."
+                  aria-label="More information about Microsoft Clarity">ℹ️</span>
               </div>
+
               <div class="skill-item">
-                <img src="./images/svg/outlook.svg" class="skills__logo" title="Outlook" alt="Outlook">
+                <img src="./images/svg/outlook.svg" class="skills__logo" alt="Outlook">
                 <span class="skill-name">Outlook</span>
                 <span class="info-icon"
-                  title="I use Outlook daily for professional communication and time management.">ℹ️</span>
+                  data-tip="I use Outlook daily for professional communication and time management."
+                  aria-label="More information about Outlook">ℹ️</span>
               </div>
+
               <div class="skill-item">
-                <img src="./images/svg/excel.svg" class="skills__logo" title="Microsoft Excel" alt="Microsoft Excel">
+                <img src="./images/svg/excel.svg" class="skills__logo" alt="Microsoft Excel">
                 <span class="skill-name">Excel</span>
                 <span class="info-icon"
-                  title="I use Microsoft Excel to organize, analyze, and visualize data through formulas, charts, and pivot tables.">ℹ️</span>
+                  data-tip="I use Microsoft Excel to organize, analyze, and visualize data through formulas, charts, and pivot tables."
+                  aria-label="More information about Excel">ℹ️</span>
               </div>
+
               <div class="skill-item">
-                <img src="./images/svg/word.svg" class="skills__logo" title="Microsoft Word" alt="Microsoft Word">
+                <img src="./images/svg/word.svg" class="skills__logo" alt="Microsoft Word">
                 <span class="skill-name">Word</span>
                 <span class="info-icon"
-                  title="I use Microsoft Word to create, format, and edit professional documents and reports.">ℹ️</span>
+                  data-tip="I use Microsoft Word to create, format, and edit professional documents and reports."
+                  aria-label="More information about Word">ℹ️</span>
               </div>
+
               <div class="skill-item">
-                <img src="./images/svg/powerpoint.svg" class="skills__logo" title="Microsoft PowerPoint"
-                  alt="Microsoft PowerPoint">
+                <img src="./images/svg/powerpoint.svg" class="skills__logo" alt="Microsoft PowerPoint">
                 <span class="skill-name">PowerPoint</span>
                 <span class="info-icon"
-                  title="I use Microsoft PowerPoint to design engaging and visually appealing presentations.">ℹ️</span>
+                  data-tip="I use Microsoft PowerPoint to design engaging and visually appealing presentations."
+                  aria-label="More information about PowerPoint">ℹ️</span>
               </div>
+
             </div>
           </div>
 
-          <!-- Contenu du troisième onglet (compétences douces) -->
+          <!-- Content of the third tab (Soft Skills) -->
           <div id="softskills" class="section-content">
             <div class="category">
               <div class="category-title">Soft Skills</div>
 
               <div class="skill-item">
-                <img src="./images/soft skills/communication-5-svgrepo-com.svg" class="skills__logo" alt="Communication"
-                  title="Communication">
+                <img src="./images/soft skills/communication-5-svgrepo-com.svg" class="skills__logo"
+                  alt="Communication">
                 <span class="skill-name">Communication</span>
                 <span class="info-icon"
-                  title="Effective communication fosters teamwork and successful relationships.">ℹ️</span>
+                  data-tip="Effective communication fosters teamwork and successful relationships."
+                  aria-label="More information about Communication">ℹ️</span>
               </div>
+
               <div class="skill-item">
                 <img src="./images/soft skills/problem-solving-skill-svgrepo-com.svg" class="skills__logo"
-                  alt="Problem Solving" title="Problem Solving">
+                  alt="Problem Solving">
                 <span class="skill-name">Problem Solving</span>
-                <span class="info-icon" title="Finding innovative solutions to challenges is crucial.">ℹ️</span>
+                <span class="info-icon" data-tip="Finding innovative solutions to challenges is crucial."
+                  aria-label="More information about Problem Solving">ℹ️</span>
               </div>
+
               <div class="skill-item">
                 <img src="./images/soft skills/head-cog-brainstorm-thinking-ideas-svgrepo-com.svg" class="skills__logo"
-                  alt="Critical Thinking" title="Critical Thinking">
+                  alt="Critical Thinking">
                 <span class="skill-name">Critical Thinking</span>
                 <span class="info-icon"
-                  title="Critical thinking helps analyse complex situations and make sound decisions.">ℹ️</span>
+                  data-tip="Critical thinking helps analyse complex situations and make sound decisions."
+                  aria-label="More information about Critical Thinking">ℹ️</span>
               </div>
+
               <div class="skill-item">
                 <img src="./images/soft skills/time-management-svgrepo-com.svg" class="skills__logo"
-                  alt="Time Management" title="Time Management">
+                  alt="Time Management">
                 <span class="skill-name">Time Management</span>
-                <span class="info-icon" title="Prioritising tasks and managing time boosts productivity.">ℹ️</span>
+                <span class="info-icon" data-tip="Prioritising tasks and managing time boosts productivity."
+                  aria-label="More information about Time Management">ℹ️</span>
               </div>
+
               <div class="skill-item">
                 <img src="./images/soft skills/public-speaking-speak-tell-talk-svgrepo-com.svg" class="skills__logo"
-                  alt="Public Speaking" title="Public Speaking">
+                  alt="Public Speaking">
                 <span class="skill-name">Public Speaking</span>
-                <span class="info-icon"
-                  title="Developed through multiple MUN conferences as delegate and trainer.">ℹ️</span>
+                <span class="info-icon" data-tip="Developed through multiple MUN conferences as delegate and trainer."
+                  aria-label="More information about Public Speaking">ℹ️</span>
               </div>
+
               <div class="skill-item">
-                <img src="./images/soft skills/leadership-svgrepo-com.svg" class="skills__logo" alt="Leadership"
-                  title="Leadership">
+                <img src="./images/soft skills/leadership-svgrepo-com.svg" class="skills__logo" alt="Leadership">
                 <span class="skill-name">Leadership</span>
                 <span class="info-icon"
-                  title="Developed through my role as a MUN trainer and organizer in student associations.">ℹ️</span>
+                  data-tip="Developed through my role as a MUN trainer and organizer in student associations."
+                  aria-label="More information about Leadership">ℹ️</span>
               </div>
+
               <div class="skill-item">
                 <img src="./images/soft skills/world-folder-svgrepo-com.svg" class="skills__logo"
-                  alt="Cultural Adaptability" title="Cultural Adaptability">
+                  alt="Cultural Adaptability">
                 <span class="skill-name">Cultural Adaptability</span>
-                <span class="info-icon"
-                  title="Strengthened by my international education and multilingual skills.">ℹ️</span>
+                <span class="info-icon" data-tip="Strengthened by my international education and multilingual skills."
+                  aria-label="More information about Cultural Adaptability">ℹ️</span>
               </div>
+
               <div class="skill-item">
                 <img src="./images/soft skills/collaboration-picture-visualize-person-svgrepo-com.svg"
-                  class="skills__logo" alt="Team Collaboration" title="Team Collaboration">
+                  class="skills__logo" alt="Team Collaboration">
                 <span class="skill-name">Team Collaboration</span>
                 <span class="info-icon"
-                  title="From academic projects at EPFL and extracurricular teamwork experiences.">ℹ️</span>
+                  data-tip="From academic projects at EPFL and extracurricular teamwork experiences."
+                  aria-label="More information about Team Collaboration">ℹ️</span>
               </div>
+
               <div class="skill-item">
                 <img src="./images/soft skills/event-manager-project-manager-secretary-schedule-svgrepo-com.svg"
-                  class="skills__logo" alt="Event Organization" title="Event Organization">
+                  class="skills__logo" alt="Event Organization">
                 <span class="skill-name">Event Organization</span>
-                <span class="info-icon" title="Experienced through my volunteer work in ÉcoDescartes and MDL.">ℹ️</span>
+                <span class="info-icon" data-tip="Experienced through my volunteer work in ÉcoDescartes and MDL."
+                  aria-label="More information about Event Organization">ℹ️</span>
               </div>
+
               <div class="skill-item">
                 <img src="./images/soft skills/business-man-thinking-of-several-options-svgrepo-com.svg"
-                  class="skills__logo" alt="Analytical Thinking" title="Analytical Thinking">
+                  class="skills__logo" alt="Analytical Thinking">
                 <span class="skill-name">Analytical Thinking</span>
-                <span class="info-icon" title="Applied in programming challenges and mathematics olympiads.">ℹ️</span>
+                <span class="info-icon" data-tip="Applied in programming challenges and mathematics olympiads."
+                  aria-label="More information about Analytical Thinking">ℹ️</span>
               </div>
+
             </div>
           </div>
 
-          <!-- Contenu du quatrième onglet (langues parlées) -->
+          <!-- Content of the fourth tab (Spoken Languages) -->
           <div id="languages" class="section-content">
             <div class="category">
               <div class="category-title">Spoken Languages</div>
 
               <div class="languages-grid">
-                <!-- Colonne gauche : Barres -->
+                <!-- Left Column: Language Proficiency Bars -->
                 <div class="languages-list">
                   <div class="language-bar">
                     <img src="./images/langues/français.png" class="skills__logo" title="French" alt="Français">
@@ -481,7 +525,7 @@
                   </div>
                 </div>
 
-                <!-- Colonne droite : Diagramme -->
+                <!-- Right Column: Diagram -->
                 <div class="languages-diagram">
                   <div class="diagram-title">Language Proficiency Levels</div>
 
@@ -545,12 +589,11 @@
         <h2>About Me</h2>
         <div class="about__content">
           <div class="about__text">
-            <p>
+            <p style="text-align: justify;">
               Hey there! I’m Omar 👋 — a computer science student at EPFL who loves learning by building things 🛠️.
               I’m passionate about crafting cool projects, diving into new tools, and figuring out how systems
               really tick under the hood 🤓. When I’m not coding, you’ll probably find me chasing waves 🏄‍♂️, going for
-              a
-              run 🏃‍♂️, or dreaming up fresh ideas to bring to life.
+              a run 🏃‍♂️, or dreaming up fresh ideas to bring to life.
               With curiosity as my compass and challenges as fuel, I’m constantly looking for new ways to grow and
               create 🚀.
             </p>
@@ -580,26 +623,25 @@
     <div class="row">
       <h2>Get in Touch</h2>
       <div class="contact__container">
-        <!-- Partie gauche : texte + bouton -->
+        <!-- Left section: text + button -->
         <div class="contact__info">
-          <p>
+          <p style="text-align: justify;">
             I’m currently a computer science student at EPFL, looking for an internship where I can apply and further
             develop the skills I’ve gained through academic projects and personal initiatives. Right now, I’m on the
-            lookout
-            for a place where I can grow, team up with awesome people, and make a real impact — all with curiosity,
-            drive,
-            and good vibes 🚀. If you’re seeking someone motivated, curious, and eager to learn, feel free to get in
-            touch
-            —
-            whether it’s for a potential opportunity, a question, or simply to connect. You’ll find my resume above with
-            more details about my background. The fastest way to reach me is via email — I’ll be glad to hear from you.
+            lookout for a place where I can grow, team up with awesome people, and make a real impact, all with
+            curiosity,
+            drive, and good vibes 🚀. If you’re seeking someone motivated, curious, and eager to learn, feel free to get
+            in
+            touch, whether it’s for a potential opportunity, a question, or simply to connect. You’ll find my resume
+            above with
+            more details about my background. The fastest way to reach me is via email, I’ll be glad to hear from you !
             😊
           </p>
           <a href="mailto:omar.azgaoui@epfl.ch?cc=omarziyad.agzaoui2005@gmail.com" class="btn">📬 omar.azgaoui@epfl.ch /
             omarziyad.agzaoui2005@gmail.com </a>
         </div>
 
-        <!-- Partie droite : formulaire -->
+        <!-- Right section: form -->
         <form class="contact__form" id="contactForm" action="https://formspree.io/f/xgvzpbbz" method="POST">
           <input type="hidden" name="_subject" value="New message from your portfolio site">
           <div class="form-group">

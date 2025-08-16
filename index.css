@@ -810,7 +810,6 @@ body:has(.gallery-modal.active) .slider-container .next {
     z-index: 10000;
 }
 
-
 .skill-name {
     flex-grow: 1;
     font-size: 1.4rem;
@@ -877,17 +876,6 @@ body:has(.gallery-modal.active) .slider-container .next {
     .info-tooltip::after {
         top: -16px;
         transform: rotate(180deg);
-    }
-}
-
-/* Hover desktop */
-@media (hover: hover) and (pointer: fine) {
-    .info-icon:hover .info-tooltip {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-        pointer-events: auto;
-        transition-delay: 0s;
     }
 }
 
@@ -1016,7 +1004,6 @@ body:has(.gallery-modal.active) .slider-container .next {
     height: 1.6rem;
     border-radius: 4px;
 }
-
 
 
 /* === Colors for each level === */
